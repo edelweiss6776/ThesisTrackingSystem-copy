@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "typeRoots": [ "./node_modules/@types" ],
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "target": "es6",
+    "module": "commonjs",
+    "jsx": "react",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "noImplicitAny": true,
+    
+  },
+}
