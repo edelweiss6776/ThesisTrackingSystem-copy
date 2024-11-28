@@ -24,77 +24,69 @@ function Shelf() {
             <CssBaseline />
 
             {/* Header */}
-            <AppBar
-                sx={{
-                    background: 'linear-gradient(to left, #9396E9 20%, #916FC6 80%)',
-                    position: 'fixed',
-                    width: '100%',
-                }}
-            >
-                <Toolbar
-                    sx={{
+            <AppBar sx={{ background: 'linear-gradient(to left, #9396E9 20%, #916FC6 80%)', position: 'fixed', width: '100%' }}>
+                <Toolbar sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    padding: '16px 16px',
+                }}>
+
+                    {/* Top row with logo and navbar */}
+                    <Box sx={{
                         display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        padding: '16px',
-                    }}
-                >
-                    {/* Top row with logo, search bar, and navbar */}
-                    <Box
-                        sx={{
+                        justifyContent: 'space-between',
+                        alignItems: 'flex-start',
+                        width: '100%',
+                    }}>
+                        
+                        {/* Logo and title */}
+                        <Box sx={{
+                            position: 'absolute',
                             display: 'flex',
                             alignItems: 'center',
-                            justifyContent: 'space-between',
-                            width: '100%',
-                            padding: '0 32px',
-                        }}
-                    >
-                        {/* Logo and Title */}
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <Avatar
-                                alt="Library Logo"
-                                src={logo}
-                                sx={{
-                                    width: scrolling ? 50 : 90,
-                                    height: scrolling ? 50 : 90,
-                                    mr: 2,
-                                    transition: 'all 0.5s ease',
-                                }}
+                            justifyContent: 'flex-start',
+        
+                        }}>
+                            <Avatar 
+                                alt="Library Logo" 
+                                src={logo} 
+                                sx={{ 
+                                    width: scrolling ? 50 : 90, 
+                                    height: scrolling ? 50 : 90, 
+                                    mr: 1, 
+                                    ml: 5,
+                                    transition: 'all 1s ease' 
+                                }} 
                             />
                             <Typography
-                                variant={scrolling ? "h5" : "h3"}
+                                variant={scrolling ? "h4" : "h2"}
                                 color="white"
                                 sx={{
                                     fontWeight: 'bold',
                                     textShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-                                    transition: 'all 0.5s ease',
+                                    transition: 'all 1s ease'
                                 }}
                             >
                                 LIBRARY
                             </Typography>
                         </Box>
 
-                        {/* Search Bar - Centered */}
-                        <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
-                            <SearchBar />
-                        </Box>
+                        {/* Search Bar */}
+                        <SearchBar />
 
                         {/* Navbar Tabs */}
                         <NavBar />
                     </Box>
                 </Toolbar>
-
                 {/* Sidebar */}
-                <Box
-                    sx={{
-                        position: 'fixed',
-                        top: 75,
-                        left: 0,
-                        zIndex: 10,
-                    }}
-                >
+                <Box sx={{
+                    position: 'absolute',
+                    top: 15,  
+                    left: 0,
+                }}>
                     <SideBar />
-                </Box>
+                    </Box>
             </AppBar>
 
             {/* Main Content */}
@@ -104,7 +96,7 @@ function Shelf() {
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    paddingTop: '200px',
+                    paddingTop: '180px',
                 }}
             >
                 <Typography
@@ -118,7 +110,7 @@ function Shelf() {
                 >
                     WELCOME!
                 </Typography>
-
+                
                 <ShelfThesis />
             </Container>
         </React.Fragment>

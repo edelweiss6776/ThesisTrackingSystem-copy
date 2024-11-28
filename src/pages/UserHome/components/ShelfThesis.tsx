@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Grid, Avatar, Divider, CircularProgress } from '@mui/material';
-import DefaultCover from "../../../images/DefaultCover.jpg"; // Replace with your default image path
+import DefaultCover from "../../../images/DefaultCover.jpg";
 import axios from 'axios';
 
 interface Thesis {
@@ -161,17 +161,20 @@ const ShelfThesis: React.FC = () => {
                                 textAlign: 'center',
                             }}
                         >
+                        <div style={{ display: "flex", justifyContent: "center", marginBottom: "16px" }}>
                             <Avatar
                                 alt="Research Title Cover"
-                                src={DefaultCover} // Replace with a dynamic cover if available
+                                src={DefaultCover}
                                 sx={{
+                                    alignItems: "center",
                                     width: 144,
                                     height: 215,
-                                    borderRadius: '6px',
-                                    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                                    borderRadius: "6px",
+                                    boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
                                 }}
                             />
-                            <Typography variant="h6">
+                        </div>
+                            <Typography variant="h6" sx={{ fontWeight: 'bold', lineHeight: 1.2, marginBottom: "16px" }}>
                                 {thesis.THESIS_TITLE}
                             </Typography>
                             <Typography variant="body2">
