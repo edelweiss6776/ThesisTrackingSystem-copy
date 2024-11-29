@@ -13,12 +13,11 @@ const LibNavBar: React.FC<NavBarProps> = ({ id }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Function to get the correct tab value based on pathname
   const getTabValue = (path: string) => {
     if (path.includes("ThesisMngmt")) return "ThesisManagement";
     if (path.includes("ThesisCategories")) return "ThesisCategories";
     if (path.includes("FeedbackHistory")) return "FeedbackHistory";
-    return "Librarian Dashboard"; // Default tab when no match is found
+    return "Librarian Dashboard";
   };
 
   const [value, setValue] = React.useState(getTabValue(location.pathname));
@@ -27,21 +26,12 @@ const LibNavBar: React.FC<NavBarProps> = ({ id }) => {
     setValue(newValue);
   };
 
-  const handleSignOut = async () => {
-    try {
-      await logout();
-      navigate("/"); // Navigate to the login page after logout
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const handleDashboardClick = () => {
-    navigate("/LibrarianHome"); // Navigate to the librarian home page
+    navigate("/LibrarianHome"); 
   };
 
   React.useEffect(() => {
-    setValue(getTabValue(location.pathname)); // Update tab value based on location
+    setValue(getTabValue(location.pathname)); 
   }, [location]);
 
   return (
@@ -94,7 +84,6 @@ const LibNavBar: React.FC<NavBarProps> = ({ id }) => {
             label="Feedback History"
             onClick={() => navigate("/FeedbackHistory")}
           />
-          <Tab value="Logout" label="Logout" onClick={handleSignOut} />
         </Tabs>
         <LibAcctHover />
       </Box>

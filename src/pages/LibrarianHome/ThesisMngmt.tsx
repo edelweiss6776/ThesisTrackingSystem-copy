@@ -6,10 +6,9 @@ import LibNavBar from "./components/LibNavBar";
 const ThesisMngmt: React.FC = () => {
   // Dummy data for the table (you would replace this with actual data)
   const thesisData = [
-    { title: "Thesis 1", submittedBy: "Student A", status: "Approved" },
-    { title: "Thesis 2", submittedBy: "Student B", status: "Pending" },
-    { title: "Thesis 3", submittedBy: "Student C", status: "Required Revision" },
-    
+    { title: "Thesis 1", author: "Student A", datePublished: "2024-01-01" },
+    { title: "Thesis 2", author: "Student B", datePublished: "2024-03-15" },
+    { title: "Thesis 3", author: "Student C", datePublished: "2024-05-22" },
   ];
 
   const [page, setPage] = React.useState(0);
@@ -94,7 +93,7 @@ const ThesisMngmt: React.FC = () => {
               },
             }}
           >
-            Add
+            Upload
           </Button>
           <Button
             component="button"
@@ -127,15 +126,15 @@ const ThesisMngmt: React.FC = () => {
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
                 <TableRow>
-                <TableCell align="center" sx={{ backgroundColor: "#D3C5FF", borderBottom: "1px solid #B8A8D2", fontWeight: 'bold' }}>
-                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Thesis Title</Typography>
-                </TableCell>
-                <TableCell align="center" sx={{ backgroundColor: "#D3C5FF", borderBottom: "1px solid #B8A8D2", fontWeight: 'bold' }}>
-                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Submitted By</Typography>
-                </TableCell>
-                <TableCell align="center" sx={{ backgroundColor: "#D3C5FF", borderBottom: "1px solid #B8A8D2", fontWeight: 'bold' }}>
-                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Status</Typography>
-                </TableCell>
+                  <TableCell align="center" sx={{ backgroundColor: "#D3C5FF", borderBottom: "1px solid #B8A8D2", fontWeight: 'bold' }}>
+                    <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Thesis Title</Typography>
+                  </TableCell>
+                  <TableCell align="center" sx={{ backgroundColor: "#D3C5FF", borderBottom: "1px solid #B8A8D2", fontWeight: 'bold' }}>
+                    <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Author</Typography>
+                  </TableCell>
+                  <TableCell align="center" sx={{ backgroundColor: "#D3C5FF", borderBottom: "1px solid #B8A8D2", fontWeight: 'bold' }}>
+                    <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Date Published</Typography>
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -144,8 +143,8 @@ const ThesisMngmt: React.FC = () => {
                   .map((thesis, index) => (
                     <TableRow hover role="checkbox" tabIndex={-1} key={index} sx={{ height: "40px" }}>
                       <TableCell align="left">{thesis.title}</TableCell>
-                      <TableCell align="left">{thesis.submittedBy}</TableCell>
-                      <TableCell align="left">{thesis.status}</TableCell>
+                      <TableCell align="left">{thesis.author}</TableCell>
+                      <TableCell align="left">{thesis.datePublished}</TableCell>
                     </TableRow>
                   ))}
               </TableBody>
