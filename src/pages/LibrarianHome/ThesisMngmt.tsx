@@ -1,226 +1,256 @@
-import React from "react";
-import { CssBaseline, AppBar, Toolbar, Box, Button, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination } from "@mui/material";
-import LibSearchBar from "./components/LibSearchBar";
-import LibNavBar from "./components/LibNavBar";
+import React, { useState, useEffect } from "react";
+import {
+    CssBaseline,
+    AppBar,
+    Toolbar,
+    Box,
+    Button,
+    Typography,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    TablePagination,
+    TextField,
+    Modal,
+    TextField as MuiTextField,
+} from "@mui/material";
+import axios from "axios";
 
 const ThesisMngmt: React.FC = () => {
-  // Dummy data for the table (you would replace this with actual data)
-  const thesisData = [
-    { title: "Thesis 1", author: "Student A", datePublished: "2024-01-01" },
-    { title: "Thesis 2", author: "Student B", datePublished: "2024-03-15" },
-    { title: "Thesis 3", author: "Student C", datePublished: "2024-05-22" },
-  ];
+    const [thesisData, setThesisData] = useState<any[]>([]);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [uploadModalOpen, setUploadModalOpen] = useState(false);
+    const [uploadData, setUploadData] = useState({
+        ABSTRACT: "",
+        AUTHOR: "",
+        COLLEGE_DEPT: "",
+        PDF_FILE: null as File | null,
+        THESIS_NO: "",
+        THESIS_TITLE: "",
+        TYPE: "",
+        YEAR: "",
+    });
 
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    // Fetch data from the API
+    const fetchTheses = async () => {
+        try {
+            const response = await axios.get("http://localhost:5000/search", {
+                params: { q: searchQuery },
+            });
+            setThesisData(response.data);
+        } catch (error) {
+            console.error("Error fetching thesis data:", error);
+        }
+    };
 
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
+    useEffect(() => {
+        fetchTheses();
+    }, [searchQuery]);
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+    const handleChangePage = (event: unknown, newPage: number) => {
+        setPage(newPage);
+    };
 
-  return (
-    <>
-      <CssBaseline />
+    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setRowsPerPage(+event.target.value);
+        setPage(0);
+    };
 
-      {/* Header */}
-      <AppBar
-        position="fixed"
-        sx={{
-          backgroundColor: "#D3C5FF",
-        }}
-      >
-        <Toolbar
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            padding: "8px 16px",
-          }}
-        >
-          {/* Navbar */}
-          <LibNavBar />
-        </Toolbar>
-      </AppBar>
+    const handleUploadInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setUploadData({ ...uploadData, [name]: value });
+    };
 
-      {/* Main Content Area */}
-      <Box
-        sx={{
-          minHeight: "100vh",
-          minWidth: "100%",
-          backgroundColor: "#9689C2",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "flex-start",
-          paddingTop: "150px",
-        }}
-      >
-        {/* Search Bar */}
-        <LibSearchBar />
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files.length > 0) {
+            setUploadData({ ...uploadData, PDF_FILE: e.target.files[0] });
+        }
+    };
 
-        {/* Buttons (Edit and Add) */}
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "flex-end",
-            gap: "25px",
-            marginBottom: "2rem",
-            width: "90%",
-          }}
-        >
-          <Button
-            component="button"
-            sx={{
-              height: "45px",
-              width: "100px",
-              padding: "0 20px",
-              backgroundColor: "#D3C5FF",
-              color: "#000",
-              border: "none",
-              borderRadius: "8px",
-              cursor: "pointer",
-              fontWeight: "normal",
-              textTransform: "none",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              "&:hover": {
-                backgroundColor: "#B8A8D2",
-              },
-            }}
-          >
-            Upload
-          </Button>
-          <Button
-            component="button"
-            sx={{
-              height: "45px",
-              width: "100px",
-              padding: "0 20px",
-              backgroundColor: "#605585",
-              color: "#FFF",
-              border: "none",
-              borderRadius: "8px",
-              cursor: "pointer",
-              fontWeight: "normal",
-              textTransform: "none",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              "&:hover": {
-                backgroundColor: "#504674",
-              },
-            }}
-          >
-            Edit
-          </Button>
-        </Box>
+    const handleUploadSubmit = async () => {
+        const formData = new FormData();
+        Object.entries(uploadData).forEach(([key, value]) => {
+            if (key === "PDF_FILE" && value instanceof File) {
+                formData.append(key, value);
+            } else {
+                formData.append(key, value as string);
+            }
+        });
 
-        {/* Table for Thesis Data */}
-        <Paper sx={{ width: '85%', margin: '0 auto', overflow: 'hidden' }}>
-          <TableContainer sx={{ maxHeight: 440 }}>
-            <Table stickyHeader aria-label="sticky table">
-              <TableHead>
-                <TableRow>
-                  <TableCell align="center" sx={{ backgroundColor: "#D3C5FF", borderBottom: "1px solid #B8A8D2", fontWeight: 'bold' }}>
-                    <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Thesis Title</Typography>
-                  </TableCell>
-                  <TableCell align="center" sx={{ backgroundColor: "#D3C5FF", borderBottom: "1px solid #B8A8D2", fontWeight: 'bold' }}>
-                    <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Author</Typography>
-                  </TableCell>
-                  <TableCell align="center" sx={{ backgroundColor: "#D3C5FF", borderBottom: "1px solid #B8A8D2", fontWeight: 'bold' }}>
-                    <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Date Published</Typography>
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {thesisData
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((thesis, index) => (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={index} sx={{ height: "40px" }}>
-                      <TableCell align="left">{thesis.title}</TableCell>
-                      <TableCell align="left">{thesis.author}</TableCell>
-                      <TableCell align="left">{thesis.datePublished}</TableCell>
-                    </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={thesisData.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </Paper>
+        try {
+            await axios.post("http://localhost:5000/upload", formData, {
+                headers: { "Content-Type": "multipart/form-data" },
+            });
+            alert("Thesis uploaded successfully!");
+            setUploadModalOpen(false);
+            setUploadData({
+                ABSTRACT: "",
+                AUTHOR: "",
+                COLLEGE_DEPT: "",
+                PDF_FILE: null,
+                THESIS_NO: "",
+                THESIS_TITLE: "",
+                TYPE: "",
+                YEAR: "",
+            });
+            fetchTheses(); // Refresh data after upload
+        } catch (error) {
+            console.error("Upload failed:", error);
+            alert("Failed to upload thesis.");
+        }
+    };
 
-        {/* Delete and Organize Buttons */}
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "flex-end",
-            gap: "25px",
-            width: "90%",
-            marginTop: "30px"
-          }}
-        >
-          <Button
-            component="button"
-            sx={{
-              height: "45px",
-              width: "100px",
-              padding: "0 20px",
-              backgroundColor: "#D3C5FF",
-              color: "#000",
-              border: "none",
-              borderRadius: "8px",
-              cursor: "pointer",
-              fontWeight: "normal",
-              textTransform: "none",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              "&:hover": {
-                backgroundColor: "#B8A8D2",
-              },
-            }}
-          >
-            Delete
-          </Button>
-          <Button
-            component="button"
-            sx={{
-              height: "45px",
-              width: "100px",
-              padding: "0 20px",
-              backgroundColor: "#605585",
-              color: "#FFF",
-              border: "none",
-              borderRadius: "8px",
-              cursor: "pointer",
-              fontWeight: "normal",
-              textTransform: "none",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              "&:hover": {
-                backgroundColor: "#504674",
-              },
-            }}
-          >
-            Organize
-          </Button>
-        </Box>
-      </Box>
-    </>
-  );
+    return (
+        <>
+            <CssBaseline />
+            <AppBar position="fixed" sx={{ backgroundColor: "#D3C5FF" }}>
+                <Toolbar sx={{ justifyContent: "space-between" }}>
+                    <Typography variant="h6">Thesis Management System</Typography>
+                    <Button
+                        variant="contained"
+                        sx={{ backgroundColor: "#6A5ACD" }}
+                        onClick={() => setUploadModalOpen(true)}
+                    >
+                        Upload Thesis
+                    </Button>
+                </Toolbar>
+            </AppBar>
+
+            <Box
+                sx={{
+                    minHeight: "100vh",
+                    paddingTop: "100px",
+                    backgroundColor: "#9689C2",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                }}
+            >
+                {/* Search Bar */}
+                <Box sx={{ marginBottom: "20px", width: "80%" }}>
+                    <TextField
+                        variant="outlined"
+                        fullWidth
+                        placeholder="Search by Thesis Title"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                </Box>
+
+                {/* Table for Thesis Data */}
+                <Paper sx={{ width: "85%", margin: "0 auto" }}>
+                    <TableContainer sx={{ maxHeight: 440 }}>
+                        <Table stickyHeader>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell align="center">Thesis Title</TableCell>
+                                    <TableCell align="center">Author</TableCell>
+                                    <TableCell align="center">Date Published</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {thesisData
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .map((thesis, index) => (
+                                        <TableRow key={index}>
+                                            <TableCell align="center">{thesis.THESIS_TITLE}</TableCell>
+                                            <TableCell align="center">{thesis.AUTHOR}</TableCell>
+                                            <TableCell align="center">{thesis.DATE_PUBLISHED}</TableCell>
+                                        </TableRow>
+                                    ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <TablePagination
+                        rowsPerPageOptions={[5, 10, 25]}
+                        component="div"
+                        count={thesisData.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
+                </Paper>
+            </Box>
+
+            {/* Upload Modal */}
+            <Modal open={uploadModalOpen} onClose={() => setUploadModalOpen(false)}>
+                <Box
+                    sx={{
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        width: 400,
+                        bgcolor: "background.paper",
+                        borderRadius: 2,
+                        p: 4,
+                    }}
+                >
+                    <Typography variant="h6" sx={{ marginBottom: 2 }}>
+                        Upload Thesis
+                    </Typography>
+                    <Box
+                        component="form"
+                        sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+                        noValidate
+                        autoComplete="off"
+                    >
+                        <MuiTextField
+                            label="Thesis Title"
+                            name="THESIS_TITLE"
+                            value={uploadData.THESIS_TITLE}
+                            onChange={handleUploadInputChange}
+                        />
+                        <MuiTextField
+                            label="Author"
+                            name="AUTHOR"
+                            value={uploadData.AUTHOR}
+                            onChange={handleUploadInputChange}
+                        />
+                        <MuiTextField
+                            label="College/Department"
+                            name="COLLEGE_DEPT"
+                            value={uploadData.COLLEGE_DEPT}
+                            onChange={handleUploadInputChange}
+                        />
+                        <MuiTextField
+                            label="Year"
+                            name="YEAR"
+                            value={uploadData.YEAR}
+                            onChange={handleUploadInputChange}
+                        />
+                        <MuiTextField
+                            label="Abstract"
+                            name="ABSTRACT"
+                            value={uploadData.ABSTRACT}
+                            multiline
+                            rows={3}
+                            onChange={handleUploadInputChange}
+                        />
+                        <Button variant="contained" component="label">
+                            Upload PDF
+                            <input
+                                type="file"
+                                hidden
+                                accept="application/pdf"
+                                onChange={handleFileChange}
+                            />
+                        </Button>
+                        <Button variant="contained" onClick={handleUploadSubmit}>
+                            Submit
+                        </Button>
+                    </Box>
+                </Box>
+            </Modal>
+        </>
+    );
 };
 
 export default ThesisMngmt;
