@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const { db } = require('./firebaseConfig');
+const { db } = require("./firebaseConfig");
 const multer = require("multer");
 
 const app = express();
@@ -17,21 +17,29 @@ const PORT = 5000;
 
 // Middleware to ensure the user is authenticated and has the correct role
 const checkRole = (requiredRole) => {
-  return async (req, res, next) => {
-    const { userID } = req.body; // assuming userID comes from body or token
-    const userDoc = await db.collection('users').doc(userID).get();
+    return async (req, res, next) => {
+        const { userID } = req.body; // Assuming userID comes from body or token
+        if (!userID) {
+            return res.status(400).json({ error: "Missing userID" });
+        }
 
-    if (!userDoc.exists) {
-      return res.status(403).json({ error: "User not found" });
-    }
+        try {
+            const userDoc = await db.collection("users").doc(userID).get();
+            if (!userDoc.exists) {
+                return res.status(403).json({ error: "User not found" });
+            }
 
-    const userRole = userDoc.data().roleID; // Check the user's role
-    if (userRole !== requiredRole) {
-      return res.status(403).json({ error: "Unauthorized access" });
-    }
+            const userRole = userDoc.data().roleID; // Check the user's role
+            if (userRole !== requiredRole) {
+                return res.status(403).json({ error: "Unauthorized access" });
+            }
 
-    next(); // Allow access if role matches
-  };
+            next(); // Allow access if role matches
+        } catch (error) {
+            console.error("Error verifying role:", error);
+            res.status(500).json({ error: "Internal server error" });
+        }
+    };
 };
 
 // Search endpoint
@@ -43,19 +51,17 @@ app.get("/search", async (req, res) => {
         let snapshot;
 
         if (query) {
-            // Perform a search with Firestore range queries
             snapshot = await thesesRef
                 .where("THESIS_TITLE", ">=", query)
                 .where("THESIS_TITLE", "<=", query + "\uf8ff")
                 .get();
         } else {
-            // Fetch all documents if no query provided
             snapshot = await thesesRef.get();
         }
 
         if (snapshot.empty) {
             console.log("No matching theses found.");
-            return res.json([]); // Return empty array if no results
+            return res.json([]);
         }
 
         const results = snapshot.docs.map((doc) => ({
@@ -71,12 +77,16 @@ app.get("/search", async (req, res) => {
     }
 });
 
-app.post("/upload", upload.single("PDF_FILE"), checkRole("Librarian"), async (req, res) => {
+app.post("/upload", upload.single("PDF_FILE"), async (req, res) => {
     const { ABSTRACT, AUTHOR, COLLEGE_DEPT, THESIS_NO, THESIS_TITLE, TYPE, YEAR } = req.body;
 
+    if (!req.file) {
+        return res.status(400).json({ error: "No PDF file uploaded" });
+    }
+
     try {
-        // Save thesis details in Firestore
-        await db.collection("theses").add({
+        // Create a new document in the "theses" collection with a generated ID
+        const newThesis = {
             ABSTRACT,
             AUTHOR,
             COLLEGE_DEPT,
@@ -84,12 +94,16 @@ app.post("/upload", upload.single("PDF_FILE"), checkRole("Librarian"), async (re
             THESIS_TITLE,
             TYPE,
             YEAR,
-            PDF_PATH: req.file.path,
-        });
-        res.status(200).send("Thesis uploaded successfully!");
+            PDF_PATH: req.file.path, // Save the file path for reference
+        };
+
+        const thesisRef = await db.collection("theses").add(newThesis);
+
+        console.log("Thesis uploaded successfully:", thesisRef.id);
+        res.status(200).json({ message: "Thesis uploaded successfully!", id: thesisRef.id });
     } catch (error) {
         console.error("Error saving thesis:", error);
-        res.status(500).send("Failed to upload thesis.");
+        res.status(500).json({ error: "Failed to upload thesis." });
     }
 });
 
