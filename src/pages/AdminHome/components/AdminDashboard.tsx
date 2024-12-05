@@ -1,13 +1,13 @@
 import React from "react";
-import { Box, Typography, TextField } from "@mui/material";
-import LibSearchBar from "./LibSearchBar";
+import { Box, Typography } from "@mui/material";
+import AdminSearchBar from "./AdminSearchBar";
+import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
 import FolderOutlinedIcon from '@mui/icons-material/FolderOutlined';
-import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
+import TimelineOutlinedIcon from '@mui/icons-material/TimelineOutlined';
 import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
-import FileOpenOutlinedIcon from '@mui/icons-material/FileOpenOutlined';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined'; // Importing the Notifications Icon
 
-const Dashboard: React.FC = () => {
+const AdminDashboard: React.FC = () => {
   return (
     <Box
       sx={{
@@ -37,7 +37,7 @@ const Dashboard: React.FC = () => {
       </Box>
 
         {/* Search Bar */}
-        <LibSearchBar searchQuery={""} setSearchQuery={() => {}} />
+        <AdminSearchBar searchQuery={""} setSearchQuery={() => {}} />
 
       {/* Stats Boxes */}
       <Box
@@ -50,10 +50,10 @@ const Dashboard: React.FC = () => {
         }}
       >
         {[ 
-          { label: "Total Thesis Files", count: "1234", Icon: FolderOutlinedIcon },
-          { label: "Pending Approvals", count: "56", Icon: AccessTimeOutlinedIcon },
-          { label: "Revisions Required", count: "12", Icon: EditNoteOutlinedIcon },
-          { label: "Categories Managed", count: "8", Icon: FileOpenOutlinedIcon },
+          { label: "Total Users", count: "46", Icon: PermIdentityOutlinedIcon },
+          { label: "Pending Librarian Requests", count: "9", Icon: FolderOutlinedIcon },
+          { label: "Recent Logins", count: "33", Icon: TimelineOutlinedIcon },
+          { label: "Recent Changes", count: "4", Icon: EditNoteOutlinedIcon },
         ].map((item, index) => (
           <Box
             key={index}
@@ -104,4 +104,4 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export default Dashboard;
+export default AdminDashboard;

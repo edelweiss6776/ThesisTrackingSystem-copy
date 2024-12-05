@@ -1,21 +1,21 @@
 import * as React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Tabs, Tab, Box, Typography } from "@mui/material";
-import LibAcctHover from "./LibAcctHover";
+import AdminAcctHover from "./AdminAcctHover";
 
 interface NavBarProps {
   id?: string;
 }
 
-const LibNavBar: React.FC<NavBarProps> = () => {
+const AdminNavBar: React.FC<NavBarProps> = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
   const getTabValue = (path: string) => {
-    if (path.includes("ThesisMngmt")) return "ThesisManagement";
-    if (path.includes("ThesisCategories")) return "ThesisCategories";
-    if (path.includes("FeedbackHistory")) return "FeedbackHistory";
-    return "Librarian Dashboard";
+    if (path.includes("UserMngmt")) return "UserManagement";
+    if (path.includes("ActivityLogs")) return "ActivityLogs";
+    if (path.includes("LibrarianRequests")) return "LibrarianRequests";
+    return "Admin Dashboard";
   };
 
   const [value, setValue] = React.useState(getTabValue(location.pathname));
@@ -25,7 +25,7 @@ const LibNavBar: React.FC<NavBarProps> = () => {
   };
 
   const handleDashboardClick = () => {
-    navigate("/LibrarianHome"); 
+    navigate("/AdminHome"); 
   };
 
   React.useEffect(() => {
@@ -43,10 +43,10 @@ const LibNavBar: React.FC<NavBarProps> = () => {
         width: "100%",
       }}
     >
-      {/* Librarian Dashboard Title */}
+      {/* Admin Dashboard Title */}
       <Box onClick={handleDashboardClick} sx={{ cursor: "pointer" }}>
         <Typography variant="h6" sx={{ fontWeight: "bold", color: "#000" }}>
-          Librarian Dashboard
+          Admin Dashboard
         </Typography>
       </Box>
 
@@ -68,25 +68,25 @@ const LibNavBar: React.FC<NavBarProps> = () => {
           }}
         >
           <Tab
-            value="ThesisManagement"
-            label="Thesis Management"
-            onClick={() => navigate("/ThesisMngmt")}
+            value="UserManagement"
+            label="User Management"
+            onClick={() => navigate("/UserMngmt")}
           />
           <Tab
-            value="ThesisCategories"
-            label="Thesis Categories"
-            onClick={() => navigate("/ThesisCategories")}
+            value="ActivityLogs"
+            label="Activity Logs"
+            onClick={() => navigate("/ActivityLogs")}
           />
           <Tab
-            value="FeedbackHistory"
-            label="Feedback History"
-            onClick={() => navigate("/FeedbackHistory")}
+            value="LibrarianRequests"
+            label="Librarian Requests"
+            onClick={() => navigate("/LibrarianRequests")}
           />
         </Tabs>
-        <LibAcctHover />
+        <AdminAcctHover />
       </Box>
     </Box>
   );
 };
 
-export default LibNavBar;
+export default AdminNavBar;

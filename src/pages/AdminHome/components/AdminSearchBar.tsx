@@ -1,12 +1,12 @@
 import React from "react";
 import { Box, TextField } from "@mui/material";
 
-interface LibSearchBarProps {
+interface AdminSearchBarProps {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
 }
 
-const LibSearchBar: React.FC<LibSearchBarProps> = ({ searchQuery, setSearchQuery }) => {
+const AdminSearchBar: React.FC<AdminSearchBarProps> = ({ searchQuery, setSearchQuery }) => {
   return (
     <Box
       sx={{
@@ -63,4 +63,4 @@ const LibSearchBar: React.FC<LibSearchBarProps> = ({ searchQuery, setSearchQuery
   );
 };
 
-export default LibSearchBar;
+export default AdminSearchBar;

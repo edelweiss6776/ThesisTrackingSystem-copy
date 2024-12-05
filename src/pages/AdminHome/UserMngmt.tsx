@@ -14,15 +14,14 @@ import {
     TableHead,
     TableRow,
     TablePagination,
-    TextField,
     Modal,
     TextField as MuiTextField,
 } from "@mui/material";
 import axios from "axios";
-import LibNavBar from "./components/LibNavBar";
-import LibSearchBar from "./components/LibSearchBar";
+import AdminNavBar from "./components/AdminNavBar";
+import AdminSearchBar from "./components/AdminSearchBar";
 
-const ThesisMngmt: React.FC = () => {
+const UserMngmt: React.FC = () => {
     const [thesisData, setThesisData] = useState<any[]>([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [page, setPage] = useState(0);
@@ -126,7 +125,7 @@ const ThesisMngmt: React.FC = () => {
                 }}
                 >
                 {/* Navbar */}
-                <LibNavBar />
+                <AdminNavBar />
                 </Toolbar>
             </AppBar>
 
@@ -142,7 +141,7 @@ const ThesisMngmt: React.FC = () => {
             >
                 {/* Search Bar */}
                 <Box sx={{ marginTop: "40px", marginBottom: "10px" }}>
-                <LibSearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+                <AdminSearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
                 </Box>
                 
                 {/* Upload Thesis Button */}
@@ -266,4 +265,4 @@ const ThesisMngmt: React.FC = () => {
     );
 };
 
-export default ThesisMngmt;
+export default UserMngmt;
