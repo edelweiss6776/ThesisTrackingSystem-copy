@@ -1,268 +1,306 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
-    CssBaseline,
-    AppBar,
-    Toolbar,
-    Box,
-    Button,
-    Typography,
-    Paper,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    TablePagination,
-    Modal,
-    TextField as MuiTextField,
+  CssBaseline,
+  AppBar,
+  Toolbar,
+  Box,
+  Button,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+  TablePagination,
+  Modal,
+  TextFieldProps,
+  TextField as MuiTextField,
 } from "@mui/material";
-import axios from "axios";
 import AdminNavBar from "./components/AdminNavBar";
 import AdminSearchBar from "./components/AdminSearchBar";
 
 const UserMngmt: React.FC = () => {
-    const [thesisData, setThesisData] = useState<any[]>([]);
-    const [searchQuery, setSearchQuery] = useState("");
+    const [editUserModal, setEditUserModal] = useState(false);
+    const [deactivateModal, setDeactivateModal] = useState(false);
+
+    const CustomTextField: React.FC<TextFieldProps> = (props) => (
+        <MuiTextField
+          {...props}
+          fullWidth
+          sx={{
+            marginBottom: 2,
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": {
+                borderColor: "gray",
+              },
+              "&:hover fieldset": {
+                borderColor: "black",
+              },
+              "&.Mui-focused fieldset": {
+                borderColor: "black",
+              },
+            },
+            "& .MuiInputBase-input": {
+              color: "black",
+            },
+            "& .MuiInputLabel-root": {
+              color: "gray",
+            },
+            "& .MuiInputLabel-root.Mui-focused": {
+              color: "black",
+            },
+          }}
+        />
+      );
+
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [uploadModalOpen, setUploadModalOpen] = useState(false);
-    const [uploadData, setUploadData] = useState({
-        ABSTRACT: "",
-        AUTHOR: "",
-        COLLEGE_DEPT: "",
-        PDF_FILE: null as File | null,
-        THESIS_NO: "",
-        THESIS_TITLE: "",
-        TYPE: "",
-        YEAR: "",
-    });
 
-    // Fetch data from the API
-    const fetchTheses = async () => {
-        try {
-            const response = await axios.get("http://localhost:5000/search", {
-                params: { q: searchQuery },
-            });
-            setThesisData(response.data);
-        } catch (error) {
-            console.error("Error fetching thesis data:", error);
-        }
-    };
-
-    useEffect(() => {
-        fetchTheses();
-    }, [searchQuery]);
-
-    const handleChangePage = (event: unknown, newPage: number) => {
-        setPage(newPage);
-    };
-
+    const categories = [
+        { username: "JuanDelaCruz", email: "jdelacruz@neu.edu.ph", role: "student", status: "Inactive" },
+        { username: "LeoGabriel", email: "lrentazida@neu.edu.ph", role: "librarian", status: "Active" },
+        { username: "JairusRamos", email: "jramos@neu.edu.ph", role: "librarian", status: "Inactive" },
+        { username: "AlyssaSanPedro", email: "asanpedro@neu.edu.ph", role: "student", status: "Active" },
+      ];
+      
+    const handleChangePage = (event: unknown, newPage: number) => setPage(newPage);
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
 
-    const handleUploadInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setUploadData({ ...uploadData, [name]: value });
-    };
+    const openEditUserModal = () => setEditUserModal(true);
+    const closeEditUserModal = () => setEditUserModal(false);
+    const openDeactivateModal = () => setDeactivateModal(true);
+    const closeDeactivateModal = () => setDeactivateModal(false);
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files.length > 0) {
-            setUploadData({ ...uploadData, PDF_FILE: e.target.files[0] });
-        }
-    };
+  return (
+    <>
+      <CssBaseline />
+      <AppBar
+        position="fixed"
+        sx={{
+          backgroundColor: "#D3C5FF",
+        }}
+      >
+        <Toolbar
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            padding: "8px 16px",
+          }}
+        >
+          {/* Navbar */}
+          <AdminNavBar />
+        </Toolbar>
+      </AppBar>
 
-    const handleUploadSubmit = async () => {
-        const formData = new FormData();
-        Object.entries(uploadData).forEach(([key, value]) => {
-            if (key === "PDF_FILE" && value instanceof File) {
-                formData.append(key, value);
-            } else {
-                formData.append(key, value as string);
-            }
-        });
+      <Box
+        sx={{
+          minHeight: "100vh",
+          paddingTop: "100px",
+          backgroundColor: "#9689C2",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        {/* Search Bar */}
+        <Box sx={{ marginTop: "25px", marginBottom: "20px" }}>
+          <AdminSearchBar searchQuery={""} setSearchQuery={() => {}} />
+        </Box>
 
-        try {
-            await axios.post("http://localhost:5000/upload", formData, {
-                headers: { "Content-Type": "multipart/form-data" },
-            });
-            alert("Thesis uploaded successfully!");
-            setUploadModalOpen(false);
-            setUploadData({
-                ABSTRACT: "",
-                AUTHOR: "",
-                COLLEGE_DEPT: "",
-                PDF_FILE: null,
-                THESIS_NO: "",
-                THESIS_TITLE: "",
-                TYPE: "",
-                YEAR: "",
-            });
-            fetchTheses(); // Refresh data after upload
-        } catch (error) {
-            console.error("Upload failed:", error);
-            alert("Failed to upload thesis.");
-        }
-    };
+        {/* Table for Thesis Categories */}
+        <Paper sx={{ width: "85%", margin: "0 auto" }}>
+          <TableContainer>
+            <Table stickyHeader>
+                <TableHead>
+                    <TableRow>
+                        <TableCell
+                            align="center"
+                            sx={{ fontWeight: "bold", width: "25%", borderRight: "1px solid #ccc" }}
+                        >
+                            Username
+                        </TableCell>
+                        <TableCell
+                            align="center"
+                            sx={{ fontWeight: "bold", width: "25%", borderRight: "1px solid #ccc" }}
+                        >
+                            Email
+                        </TableCell>
+                        <TableCell
+                            align="center"
+                            sx={{ fontWeight: "bold", width: "25%" }}
+                        >
+                            Role
+                        </TableCell>
+                        <TableCell
+                            align="center"
+                            sx={{ fontWeight: "bold", width: "25%" }}
+                        >
+                            Status
+                        </TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {categories
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row, index) => (
+                        <TableRow key={index}>
+                        <TableCell align="left" sx={{ width: "25%", borderRight: "1px solid #ccc" }}>
+                            {row.username}
+                        </TableCell>
+                        <TableCell align="left" sx={{ width: "25%", borderRight: "1px solid #ccc" }}>
+                            {row.email}
+                        </TableCell>
+                        <TableCell align="left" sx={{ width: "25%", borderRight: "1px solid #ccc" }}>
+                            {row.role}
+                        </TableCell>
+                        <TableCell align="left" sx={{ width: "25%" }}>
+                            {row.status}
+                        </TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={categories.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </Paper>
 
-    return (
-        <>
-            <CssBaseline />
-                <AppBar
-                position="fixed"
+        {/* Submit and Cancel Buttons */}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            width: "100%",
+            marginTop: "20px",
+            marginRight: "225px",
+            marginBottom: "20px",
+            gap: "10px"
+          }}
+        >
+          <Button variant="contained" sx={{ backgroundColor: "#6A5ACD" }} onClick={openEditUserModal}>
+            Edit
+          </Button>
+          <Button variant="contained" sx={{ backgroundColor: "#605585" }} onClick={openDeactivateModal}>
+            Deactivate
+          </Button>
+        </Box>
+      </Box>
+
+      {/* Edit Modal */}
+      <Modal open={editUserModal} onClose={closeEditUserModal}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "#D3C5FF",
+            borderRadius: 2,
+            p: 4,
+          }}
+        >
+          <Typography variant="h6" sx={{ fontWeight: "bold", marginBottom: 2 }}>
+            Edit User
+          </Typography>
+
+          <CustomTextField label="Name" />
+          <CustomTextField label="Email" />
+          <CustomTextField label="Password" type="password" />
+          <CustomTextField label="Role" />
+
+          <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2 }}>
+            <Button
+              variant="outlined"
+              sx={{
+                color: "black",
+                borderColor: "gray",
+                "&:hover": {
+                  borderColor: "black",
+                },
+              }}
+              onClick={closeEditUserModal}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: "#6A5ACD",
+                "&:hover": {
+                  backgroundColor: "#5A4EB0",
+                },
+              }}
+            >
+              Save changes
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
+
+      {/* Deactivate Modal */}
+      <Modal open={deactivateModal} onClose={closeDeactivateModal}>
+        <Box
+            sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "#D3C5FF",
+            borderRadius: 2,
+            p: 4,
+            }}
+        >
+            <Typography sx={{ fontSize: "20px", fontWeight: "bold", marginBottom: 2 }}>
+            Are you sure you want to deactivate this user?
+            </Typography>
+            <Typography sx={{ fontSize: "14px", color: "gray", marginBottom: 2 }}>
+            This action cannot be undone. This will permanently delete the users account and remove the users data from our servers.
+            </Typography>
+            <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2 }}>
+            <Button
+                variant="outlined"
                 sx={{
-                backgroundColor: "#D3C5FF",
+                color: "black",
+                borderColor: "gray",
+                "&:hover": {
+                    borderColor: "black",
+                },
+                }}
+                onClick={closeDeactivateModal}
+            >
+                Cancel
+            </Button>
+            <Button
+                variant="contained"
+                sx={{
+                backgroundColor: "#6A5ACD",
+                "&:hover": {
+                    backgroundColor: "#5A4EB0",
+                },
                 }}
             >
-                <Toolbar
-                sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    padding: "8px 16px",
-                }}
-                >
-                {/* Navbar */}
-                <AdminNavBar />
-                </Toolbar>
-            </AppBar>
-
-            <Box
-                sx={{
-                    minHeight: "100vh",
-                    paddingTop: "100px",
-                    backgroundColor: "#9689C2",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                }}
-            >
-                {/* Search Bar */}
-                <Box sx={{ marginTop: "40px", marginBottom: "10px" }}>
-                <AdminSearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-                </Box>
-                
-                {/* Upload Thesis Button */}
-                <Box sx={{ display: "flex", justifyContent: "flex-end", width: "100%", marginRight: "225px", marginBottom: "20px" }}>
-                    <Button
-                    variant="contained"
-                    sx={{ backgroundColor: "#6A5ACD" }}
-                    onClick={() => setUploadModalOpen(true)}
-                    >
-                    Upload Thesis
-                    </Button>
-                </Box>
-
-                {/* Table for Thesis Data */}
-                <Paper sx={{ width: "85%", margin: "0 auto" }}>
-                    <TableContainer sx={{ maxHeight: 440 }}>
-                        <Table stickyHeader>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell align="center">Thesis Title</TableCell>
-                                    <TableCell align="center">Author</TableCell>
-                                    <TableCell align="center">Date Published</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {thesisData
-                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                    .map((thesis, index) => (
-                                        <TableRow key={index}>
-                                            <TableCell align="center">{thesis.THESIS_TITLE}</TableCell>
-                                            <TableCell align="center">{thesis.AUTHOR}</TableCell>
-                                            <TableCell align="center">{thesis.DATE_PUBLISHED}</TableCell>
-                                        </TableRow>
-                                    ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                    <TablePagination
-                        rowsPerPageOptions={[5, 10, 25]}
-                        component="div"
-                        count={thesisData.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                    />
-                </Paper>
+                Continue
+            </Button>
             </Box>
-
-            {/* Upload Modal */}
-            <Modal open={uploadModalOpen} onClose={() => setUploadModalOpen(false)}>
-                <Box
-                    sx={{
-                        position: "absolute",
-                        top: "50%",
-                        left: "50%",
-                        transform: "translate(-50%, -50%)",
-                        width: 400,
-                        bgcolor: "background.paper",
-                        borderRadius: 2,
-                        p: 4,
-                    }}
-                >
-                    <Typography variant="h6" sx={{ marginBottom: 2 }}>
-                        Upload Thesis
-                    </Typography>
-                    <Box
-                        component="form"
-                        sx={{ display: "flex", flexDirection: "column", gap: 2 }}
-                        noValidate
-                        autoComplete="off"
-                    >
-                        <MuiTextField
-                            label="Thesis Title"
-                            name="THESIS_TITLE"
-                            value={uploadData.THESIS_TITLE}
-                            onChange={handleUploadInputChange}
-                        />
-                        <MuiTextField
-                            label="Author"
-                            name="AUTHOR"
-                            value={uploadData.AUTHOR}
-                            onChange={handleUploadInputChange}
-                        />
-                        <MuiTextField
-                            label="College/Department"
-                            name="COLLEGE_DEPT"
-                            value={uploadData.COLLEGE_DEPT}
-                            onChange={handleUploadInputChange}
-                        />
-                        <MuiTextField
-                            label="Year"
-                            name="YEAR"
-                            value={uploadData.YEAR}
-                            onChange={handleUploadInputChange}
-                        />
-                        <MuiTextField
-                            label="Abstract"
-                            name="ABSTRACT"
-                            value={uploadData.ABSTRACT}
-                            multiline
-                            rows={3}
-                            onChange={handleUploadInputChange}
-                        />
-                        <Button variant="contained" component="label">
-                            Upload PDF
-                            <input
-                                type="file"
-                                hidden
-                                accept="application/pdf"
-                                onChange={handleFileChange}
-                            />
-                        </Button>
-                        <Button variant="contained" onClick={handleUploadSubmit}>
-                            Submit
-                        </Button>
-                    </Box>
-                </Box>
-            </Modal>
-        </>
-    );
+        </Box>
+      </Modal>
+    </>
+  );
 };
 
 export default UserMngmt;

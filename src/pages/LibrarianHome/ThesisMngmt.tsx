@@ -14,7 +14,6 @@ import {
     TableHead,
     TableRow,
     TablePagination,
-    TextField,
     Modal,
     TextField as MuiTextField,
 } from "@mui/material";
@@ -162,9 +161,9 @@ const ThesisMngmt: React.FC = () => {
                         <Table stickyHeader>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell align="center">Thesis Title</TableCell>
-                                    <TableCell align="center">Author</TableCell>
-                                    <TableCell align="center">Date Published</TableCell>
+                                    <TableCell align="center" sx={{ fontWeight: "bold" }}>Thesis Title</TableCell>
+                                    <TableCell align="center" sx={{ fontWeight: "bold" }}>Author</TableCell>
+                                    <TableCell align="center" sx={{ fontWeight: "bold" }}>Date Published</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>

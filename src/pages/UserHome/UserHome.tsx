@@ -2,7 +2,8 @@ import * as React from 'react';
 import { AppBar, Toolbar, Typography, CssBaseline, Container, Box, Avatar } from '@mui/material';
 import NavBar from "./components/NavBar";
 import FeaturedBooks from './components/FeaturedBooks';
-import logo from "../../images/Logo.png";
+import logo from "../../images/ThesisphereLogo.png";
+import thesisphere from "../../images/Thesisphere.png";
 import school from "../../images/School.png";
 
 function UserHome() {
@@ -38,37 +39,47 @@ function UserHome() {
                         }}>
                     
                     {/* Logo */}
-                    <Box sx={{ position: 'absolute', 
-                        top: 0, 
-                        left: 0, 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        justifyContent: 'flex-start', 
-                        margin: '10px' }}>
-                        <Avatar alt="Library Logo" src={logo} sx={{ width: 50, height: 50, mr: 1 }} />
-                    </Box>
+                        <Box sx={{ 
+                            position: 'absolute', 
+                            top: 0, 
+                            left: 0, 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            justifyContent: 'flex-start', 
+                            marginTop: scrolling ? '8px' : '56px', 
+                            marginLeft: scrolling ? '10px' : '680px',
+                            transition: 'all 1s ease'  
+                        }}>
+                            <img 
+                                alt="Library Logo" 
+                                src={logo} 
+                                style={{
+                                    width: scrolling ? '40px' : '125px',
+                                    height: scrolling ? '40px' : '125px',
+                                    objectFit: 'contain',
+                                    transition: 'width 1s ease, height 1s ease'
+                                }} 
+                            />
+                        </Box>
 
                     {/* Library text */}
                     <Box sx={{ display: 'flex', 
                                flexDirection: scrolling ? 'row' : 'column', 
                                alignItems: 'center', 
                                justifyContent: scrolling ? 'flex-start' : 'center', 
-                               marginTop: scrolling ? '0' : '56px', 
-                               marginLeft: scrolling ? '45px' : '580px', 
+                               marginTop: scrolling ? '8px' : '170px', 
+                               marginLeft: scrolling ? '30px' : '500px', 
                                transition: 'all 1s ease'
                             }}>
-                        <Typography
-                            variant="h5"
-                            color="white"
-                            sx={{
-                                fontSize: scrolling ? '36px' : '56px',
-                                fontWeight: 'bold',
-                                textShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-                                transition: 'font-size 1s ease, margin-top 1s ease',
+                        <img 
+                            src={thesisphere}
+                            alt="Library Logo"
+                            style={{
+                            width: scrolling ? '170px' : '400px',
+                            height: scrolling ? '36px' : '84px',
+                            transition: 'width 1s ease, height 1s ease'  
                             }}
-                        >
-                            LIBRARY
-                        </Typography>
+                        />
                     </Box>
 
                     {/* Navbar Tabs */}
@@ -88,24 +99,9 @@ function UserHome() {
                     backgroundPosition: 'center',
                     minHeight: '100vh',
                     minWidth: '100%',
-                    paddingTop: '180px'
+                    paddingTop: '250px'
                 }}
-            >
-                <Typography
-                    variant="h1"
-                    sx={{
-                        fontSize: '2rem',
-                        fontWeight: 'bold',
-                        color: '#49454F',
-                        textShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'
-                    }}
-                >
-                    WELCOME!
-                </Typography>
-                <Typography variant="subtitle1" sx={{ marginTop: '10px', color: '#555' }}>
-                    Why do we use it? It is a long established fact
-                </Typography>
-                
+            >    
                 <FeaturedBooks />
             </Container>
         </React.Fragment>
