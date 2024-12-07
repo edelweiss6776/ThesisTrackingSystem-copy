@@ -173,7 +173,7 @@ const ThesisMngmt: React.FC = () => {
                                         <TableRow key={index}>
                                             <TableCell align="center">{thesis.THESIS_TITLE}</TableCell>
                                             <TableCell align="center">{thesis.AUTHOR}</TableCell>
-                                            <TableCell align="center">{thesis.DATE_PUBLISHED}</TableCell>
+                                            <TableCell align="center">{thesis.YEAR}</TableCell>
                                         </TableRow>
                                     ))}
                             </TableBody>
