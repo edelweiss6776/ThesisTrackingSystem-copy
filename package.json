@@ -8,6 +8,7 @@
     "@mui/icons-material": "^6.1.7",
     "@mui/material": "^6.1.10",
     "@types/react": "^18.3.12",
+    "axios": "^1.7.9",
     "cloudinary": "^2.5.1",
     "cors": "^2.8.5",
     "cra-template-typescript": "1.2.0",
