@@ -284,21 +284,21 @@ const ThesisCategories: React.FC = () => {
                         <Button
                             variant="contained"
                             sx={{
-                                backgroundColor: "#6A5ACD", 
+                                backgroundColor: "#6A5ACD",
                                 "&:hover": {
-                            backgroundColor: "#5A4EB0",
+                                    backgroundColor: "#5A4EB0",
                                 },
                             }}
-                        onClick={handleCreateCategory}
+                            onClick={handleCreateCategory}
                         >
-                        Create
-                    </Button>
+                            Create
+                        </Button>
+                    </Box>
                 </Box>
-            </Box>
-        </Modal >
+            </Modal >
 
-            {/* Edit Modal */ }
-            < Modal open = { editModal } onClose = { closeEditModal } >
+            {/* Edit Modal */}
+            < Modal open={editModal} onClose={closeEditModal} >
                 <Box
                     sx={{
                         position: "absolute",
@@ -373,58 +373,58 @@ const ThesisCategories: React.FC = () => {
                 </Box>
             </Modal >
 
-    {/* Delete Modal */ }
-    < Modal open = { deleteModal } onClose = { closeDeleteModal } >
-        <Box
-            sx={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                width: 400,
-                bgcolor: "#D3C5FF",
-                borderRadius: 2,
-                p: 4,
-            }}
-        >
-            <Typography
-                variant="h6"
-                sx={{ fontWeight: "bold", marginBottom: 2, textAlign: "center" }}
-            >
-                Are you sure you want to delete this category?
-            </Typography>
-            <Typography sx={{ fontSize: "14px", color: "gray", marginBottom: 2 }}>
-                All theses within this category will be unassigned.
-            </Typography>
-            <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2 }}>
-                <Button
-                    variant="outlined"
+            {/* Delete Modal */}
+            < Modal open={deleteModal} onClose={closeDeleteModal} >
+                <Box
                     sx={{
-                        color: "black",
-                        borderColor: "gray",
-                        "&:hover": {
-                            borderColor: "black",
-                        },
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        width: 400,
+                        bgcolor: "#D3C5FF",
+                        borderRadius: 2,
+                        p: 4,
                     }}
-                    onClick={closeDeleteModal}
                 >
-                    Cancel
-                </Button>
-                <Button
-                    variant="contained"
-                    color="error"
-                    sx={{
-                        backgroundColor: "#FF6F61",
-                        "&:hover": {
-                            backgroundColor: "#D94A3D",
-                        },
-                    }}
-                    onClick={handleDeleteCategory}
-                >
-                    Delete
-                </Button>
-            </Box>
-        </Box>
+                    <Typography
+                        variant="h6"
+                        sx={{ fontWeight: "bold", marginBottom: 2, textAlign: "center" }}
+                    >
+                        Are you sure you want to delete this category?
+                    </Typography>
+                    <Typography sx={{ fontSize: "14px", color: "gray", marginBottom: 2 }}>
+                        All theses within this category will be unassigned.
+                    </Typography>
+                    <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2 }}>
+                        <Button
+                            variant="outlined"
+                            sx={{
+                                color: "black",
+                                borderColor: "gray",
+                                "&:hover": {
+                                    borderColor: "black",
+                                },
+                            }}
+                            onClick={closeDeleteModal}
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            variant="contained"
+                            color="error"
+                            sx={{
+                                backgroundColor: "#FF6F61",
+                                "&:hover": {
+                                    backgroundColor: "#D94A3D",
+                                },
+                            }}
+                            onClick={handleDeleteCategory}
+                        >
+                            Delete
+                        </Button>
+                    </Box>
+                </Box>
             </Modal >
         </>
     );

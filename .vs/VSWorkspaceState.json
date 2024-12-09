@@ -4,8 +4,7 @@
     "\\library-backend",
     "\\src",
     "\\src\\pages",
-    "\\src\\pages\\LibrarianHome",
-    "\\src\\pages\\LibrarianHome\\components"
+    "\\src\\pages\\AdminHome"
   ],
   "SelectedNode": "\\library-backend",
   "PreviewInSolutionExplorer": false

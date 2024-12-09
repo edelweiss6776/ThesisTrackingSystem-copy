@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Box, Avatar, Typography, Popover, MenuItem, Divider } from '@mui/material';
-import { Edit, Settings, History, Logout } from '@mui/icons-material';
+import { Edit, Settings, History, Logout, Security, AssignmentInd } from '@mui/icons-material'; // Added icons
 import { UserAuth } from '../../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
-const AcctHover: React.FC = () => {
+const AdminAcctHover: React.FC = () => {
     const { user, logout } = UserAuth();
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -108,6 +108,14 @@ const AcctHover: React.FC = () => {
                         <History fontSize="small" sx={{ mr: 2 }} />
                         Recent Activity
                     </MenuItem>
+                    <MenuItem onClick={() => console.log('Access Level')}>
+                        <Security fontSize="small" sx={{ mr: 2 }} />
+                        Access Level
+                    </MenuItem>
+                    <MenuItem onClick={() => console.log('Role Assignment')}>
+                        <AssignmentInd fontSize="small" sx={{ mr: 2 }} />
+                        Role Assignment
+                    </MenuItem>
                     <MenuItem onClick={handleSignOut}>
                         <Logout fontSize="small" sx={{ mr: 2 }} />
                         Log Out
@@ -118,4 +126,4 @@ const AcctHover: React.FC = () => {
     );
 };
 
-export default AcctHover;
+export default AdminAcctHover;

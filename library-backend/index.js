@@ -23,7 +23,7 @@ const upload = multer({ storage });
 
 // Middleware for role-based authentication
 const checkRole = (requiredRole) => async (req, res, next) => {
-    const { userID } = req.body; // Assuming userID comes from body or token
+    const { userID } = req.body;
     if (!userID) {
         return res.status(400).json({ error: "Missing userID" });
     }
@@ -34,12 +34,12 @@ const checkRole = (requiredRole) => async (req, res, next) => {
             return res.status(403).json({ error: "User not found" });
         }
 
-        const userRole = userDoc.data().roleID; // Get user role
+        const userRole = userDoc.data().roleID;
         if (userRole !== requiredRole) {
             return res.status(403).json({ error: "Unauthorized access" });
         }
 
-        next(); // Role matches, proceed
+        next();
     } catch (error) {
         console.error("Error verifying role:", error);
         res.status(500).json({ error: "Internal server error" });
@@ -48,20 +48,18 @@ const checkRole = (requiredRole) => async (req, res, next) => {
 
 // Search endpoint
 app.get("/search", async (req, res) => {
-    const query = req.query.q || ""; // Default to empty string if no query
+    const query = req.query.q || "";
     try {
         console.log(`Received search query: "${query}"`);
         const thesesRef = db.collection("theses");
         let snapshot;
 
         if (query) {
-            // Perform case-insensitive search with range queries
             snapshot = await thesesRef
                 .where("THESIS_TITLE", ">=", query)
                 .where("THESIS_TITLE", "<=", query + "\uf8ff")
                 .get();
         } else {
-            // Fetch all records if no query is provided
             snapshot = await thesesRef.get();
         }
 
@@ -92,11 +90,10 @@ app.post("/upload", upload.single("PDF_FILE"), async (req, res) => {
     }
 
     try {
-        // Upload the file to Cloudinary
         const stream = Readable.from(req.file.buffer);
         const uploadResponse = await new Promise((resolve, reject) => {
             const uploadStream = cloudinary.uploader.upload_stream(
-                { resource_type: "auto", public_id: THESIS_NO }, // Optional: use thesis number as public ID
+                { resource_type: "auto", public_id: THESIS_NO },
                 (error, result) => {
                     if (error) return reject(error);
                     resolve(result);
@@ -105,7 +102,6 @@ app.post("/upload", upload.single("PDF_FILE"), async (req, res) => {
             stream.pipe(uploadStream);
         });
 
-        // Save the thesis metadata in Firestore
         const newThesis = {
             ABSTRACT,
             AUTHOR,
@@ -114,8 +110,8 @@ app.post("/upload", upload.single("PDF_FILE"), async (req, res) => {
             THESIS_TITLE,
             TYPE,
             YEAR,
-            PDF_URL: uploadResponse.secure_url, // Cloudinary URL
-            PDF_PUBLIC_ID: uploadResponse.public_id, // For future reference (e.g., deletion)
+            PDF_URL: uploadResponse.secure_url,
+            PDF_PUBLIC_ID: uploadResponse.public_id,
         };
 
         const thesisRef = await db.collection("theses").add(newThesis);
@@ -127,25 +123,9 @@ app.post("/upload", upload.single("PDF_FILE"), async (req, res) => {
         res.status(500).json({ error: "Failed to upload thesis." });
     }
 });
+
+// Thesis categories endpoints
 app.get("/api/thesis-categories", async (req, res) => {
-    try {
-        const categoriesRef = db.collection("thesisCategories"); // Firestore collection for categories
-        const snapshot = await categoriesRef.get();
-
-        if (snapshot.empty) {
-            console.log("No thesis categories found.");
-            return res.json([]);
-        }
-
-        const categories = snapshot.docs.map((doc) => doc.data().name); // Assuming each document has a `name` field
-
-        console.log("Thesis categories retrieved:", categories);
-        res.status(200).json(categories);
-    } catch (error) {
-        console.error("Error fetching thesis categories:", error);
-        res.status(500).json({ error: "Failed to fetch thesis categories." });
-    }
-}); app.get("/api/thesis-categories", async (req, res) => {
     try {
         const categoriesSnapshot = await db.collection("thesis_categories").get();
 
@@ -165,7 +145,6 @@ app.get("/api/thesis-categories", async (req, res) => {
     }
 });
 
-// 2. Add a new category
 app.post("/api/thesis-categories", async (req, res) => {
     const { categoryName } = req.body;
 
@@ -184,7 +163,6 @@ app.post("/api/thesis-categories", async (req, res) => {
     }
 });
 
-// 3. Update an existing category
 app.put("/api/thesis-categories/:id", async (req, res) => {
     const { id } = req.params;
     const { categoryName } = req.body;
@@ -209,7 +187,6 @@ app.put("/api/thesis-categories/:id", async (req, res) => {
     }
 });
 
-// 4. Delete a category
 app.delete("/api/thesis-categories/:id", async (req, res) => {
     const { id } = req.params;
 
@@ -229,6 +206,23 @@ app.delete("/api/thesis-categories/:id", async (req, res) => {
     }
 });
 
+// Feedback endpoint
+app.post("/feedback", async (req, res) => {
+    try {
+        const { feedback, user } = req.body;
+        const feedbackDoc = {
+            feedback,
+            user,
+            timestamp: new Date(),
+        };
+
+        await db.collection("feedback").add(feedbackDoc);
+        res.status(201).send("Feedback submitted successfully");
+    } catch (err) {
+        console.error("Error saving feedback:", err);
+        res.status(500).send("Failed to submit feedback");
+    }
+});
 
 // Start server
 const PORT = process.env.PORT || 5000;
