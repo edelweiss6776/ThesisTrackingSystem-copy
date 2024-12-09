@@ -4,9 +4,7 @@ import NavBar from "./components/NavBar";
 import SearchBar from "./components/SearchBar";
 import SideBar from "./components/SideBar";
 import ShelfThesis from './components/ShelfThesis';
-import logo from "../../images/ThesisphereLogo.png";
-import thesisphere from "../../images/Thesisphere.png";
-import school from "../../images/School.png";
+import logo from "../../images/Logo.png";
 
 function Shelf() {
     const [scrolling, setScrolling] = React.useState(false);
@@ -50,36 +48,28 @@ function Shelf() {
                             justifyContent: 'flex-start',
         
                         }}>
-                            <Box sx={{ mr: 1, ml: 3 }}>
-                                <img 
-                                    alt="Library Logo" 
-                                    src={logo} 
-                                    style={{ 
-                                        width: scrolling ? 50 : 90, 
-                                        height: scrolling ? 50 : 90, 
-                                        objectFit: 'contain',
-                                        transition: 'all 1s ease',
-                                    }} 
-                                />
-                            </Box>
-
-                            {/* Library text */}
-                            <Box sx={{ display: 'flex', 
-                                    flexDirection: scrolling ? 'row' : 'column', 
-                                    alignItems: 'center', 
-                                    justifyContent: scrolling ? 'flex-start' : 'center', 
+                            <Avatar 
+                                alt="Library Logo" 
+                                src={logo} 
+                                sx={{ 
+                                    width: scrolling ? 50 : 90, 
+                                    height: scrolling ? 50 : 90, 
+                                    mr: 1, 
+                                    ml: 5,
+                                    transition: 'all 1s ease' 
+                                }} 
+                            />
+                            <Typography
+                                variant={scrolling ? "h4" : "h2"}
+                                color="white"
+                                sx={{
+                                    fontWeight: 'bold',
+                                    textShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
                                     transition: 'all 1s ease'
-                                    }}>
-                                <img 
-                                    src={thesisphere}
-                                    alt="Library Logo"
-                                    style={{
-                                    width: scrolling ? '170px' : '400px',
-                                    height: scrolling ? '36px' : '84px',
-                                    transition: 'width 1s ease, height 1s ease'  
-                                    }}
-                                />
-                            </Box>
+                                }}
+                            >
+                                LIBRARY
+                            </Typography>
                         </Box>
 
                         {/* Search Bar */}
@@ -99,14 +89,9 @@ function Shelf() {
                     </Box>
             </AppBar>
 
-        {/* Main Content */}
+            {/* Main Content */}
             <Container
                 sx={{
-                    backgroundImage: `linear-gradient(#FFFFFFB3, #FFFFFFB3), url(${school})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    minHeight: '100vh',
-                    minWidth: '100%',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
@@ -125,6 +110,7 @@ function Shelf() {
                 >
                     WELCOME!
                 </Typography>
+                
                 <ShelfThesis />
             </Container>
         </React.Fragment>

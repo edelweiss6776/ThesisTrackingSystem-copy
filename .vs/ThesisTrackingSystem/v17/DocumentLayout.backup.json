@@ -1,0 +1,316 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\library-backend\\index.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:library-backend\\index.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\library-backend\\meow.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:library-backend\\meow.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\library-backend\\.env||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:library-backend\\.env||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\src\\firebase.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\firebase.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\library-backend\\package-lock.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:library-backend\\package-lock.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\library-backend\\firebaseConfig.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:library-backend\\firebaseConfig.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\src\\pages\\LibrarianHome\\ThesisMngmt.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\pages\\LibrarianHome\\ThesisMngmt.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\src\\context\\AuthContext.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\context\\AuthContext.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\src\\pages\\Login.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\pages\\Login.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\package.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:package.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\src\\App.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\App.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\src\\pages\\LibrarianHome\\LibrarianHome.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\pages\\LibrarianHome\\LibrarianHome.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\src\\pages\\LibrarianHome\\components\\UploadThesisModal.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\pages\\LibrarianHome\\components\\UploadThesisModal.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\src\\pages\\LibrarianHome\\components\\LibAcctHover.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\pages\\LibrarianHome\\components\\LibAcctHover.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\src\\pages\\LibrarianHome\\components\\LibNavBar.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\pages\\LibrarianHome\\components\\LibNavBar.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\src\\pages\\LibrarianHome\\components\\LibSearchBar.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\pages\\LibrarianHome\\components\\LibSearchBar.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 1245,
+          "SelectedChildIndex": 12,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "package-lock.json",
+              "DocumentMoniker": "C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\library-backend\\package-lock.json",
+              "RelativeDocumentMoniker": "library-backend\\package-lock.json",
+              "ToolTip": "C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\library-backend\\package-lock.json",
+              "RelativeToolTip": "library-backend\\package-lock.json",
+              "ViewState": "AgIAAOEJAAAAAAAAAAAAABwKAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-12-08T23:42:30.128Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "meow.json",
+              "DocumentMoniker": "C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\library-backend\\meow.json",
+              "RelativeDocumentMoniker": "library-backend\\meow.json",
+              "ToolTip": "C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\library-backend\\meow.json",
+              "RelativeToolTip": "library-backend\\meow.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-12-07T14:03:03.45Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "firebase.tsx",
+              "DocumentMoniker": "C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\src\\firebase.tsx",
+              "RelativeDocumentMoniker": "src\\firebase.tsx",
+              "ToolTip": "C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\src\\firebase.tsx",
+              "RelativeToolTip": "src\\firebase.tsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2024-12-05T07:16:56.069Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "firebaseConfig.js",
+              "DocumentMoniker": "C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\library-backend\\firebaseConfig.js",
+              "RelativeDocumentMoniker": "library-backend\\firebaseConfig.js",
+              "ToolTip": "C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\library-backend\\firebaseConfig.js",
+              "RelativeToolTip": "library-backend\\firebaseConfig.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-12-04T23:54:11.65Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ThesisMngmt.tsx",
+              "DocumentMoniker": "C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\src\\pages\\LibrarianHome\\ThesisMngmt.tsx",
+              "RelativeDocumentMoniker": "src\\pages\\LibrarianHome\\ThesisMngmt.tsx",
+              "ToolTip": "C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\src\\pages\\LibrarianHome\\ThesisMngmt.tsx",
+              "RelativeToolTip": "src\\pages\\LibrarianHome\\ThesisMngmt.tsx",
+              "ViewState": "AgIAAJ0AAAAAAAAAAAAYwKMAAABSAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2024-12-02T00:12:07.982Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "index.js",
+              "DocumentMoniker": "C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\library-backend\\index.js",
+              "RelativeDocumentMoniker": "library-backend\\index.js",
+              "ToolTip": "C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\library-backend\\index.js",
+              "RelativeToolTip": "library-backend\\index.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAIYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-12-02T00:13:30.298Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "package.json",
+              "DocumentMoniker": "C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\package.json",
+              "RelativeDocumentMoniker": "package.json",
+              "ToolTip": "C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\package.json",
+              "RelativeToolTip": "package.json",
+              "ViewState": "AgIAABgAAAAAAAAAAAAAABgAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-12-04T13:21:40.478Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "App.tsx",
+              "DocumentMoniker": "C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\src\\App.tsx",
+              "RelativeDocumentMoniker": "src\\App.tsx",
+              "ToolTip": "C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\src\\App.tsx",
+              "RelativeToolTip": "src\\App.tsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2024-12-02T01:52:03.033Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Login.tsx",
+              "DocumentMoniker": "C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\src\\pages\\Login.tsx",
+              "RelativeDocumentMoniker": "src\\pages\\Login.tsx",
+              "ToolTip": "C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\src\\pages\\Login.tsx",
+              "RelativeToolTip": "src\\pages\\Login.tsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAG0AAAA9AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2024-12-02T01:29:09.896Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": ".env",
+              "DocumentMoniker": "C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\library-backend\\.env",
+              "RelativeDocumentMoniker": "library-backend\\.env",
+              "ToolTip": "C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\library-backend\\.env",
+              "RelativeToolTip": "library-backend\\.env",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-12-07T11:30:44.41Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "AuthContext.tsx",
+              "DocumentMoniker": "C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\src\\context\\AuthContext.tsx",
+              "RelativeDocumentMoniker": "src\\context\\AuthContext.tsx",
+              "ToolTip": "C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\src\\context\\AuthContext.tsx",
+              "RelativeToolTip": "src\\context\\AuthContext.tsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAABKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2024-12-02T01:57:48.115Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "UploadThesisModal.tsx",
+              "DocumentMoniker": "C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\src\\pages\\LibrarianHome\\components\\UploadThesisModal.tsx",
+              "RelativeDocumentMoniker": "src\\pages\\LibrarianHome\\components\\UploadThesisModal.tsx",
+              "ToolTip": "C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\src\\pages\\LibrarianHome\\components\\UploadThesisModal.tsx",
+              "RelativeToolTip": "src\\pages\\LibrarianHome\\components\\UploadThesisModal.tsx",
+              "ViewState": "AgIAADMAAAAAAAAAAAAiwEoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2024-12-02T00:19:19.751Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "LibrarianHome.tsx",
+              "DocumentMoniker": "C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\src\\pages\\LibrarianHome\\LibrarianHome.tsx",
+              "RelativeDocumentMoniker": "src\\pages\\LibrarianHome\\LibrarianHome.tsx",
+              "ToolTip": "C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\src\\pages\\LibrarianHome\\LibrarianHome.tsx",
+              "RelativeToolTip": "src\\pages\\LibrarianHome\\LibrarianHome.tsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2024-12-04T13:22:02.13Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "LibAcctHover.tsx",
+              "DocumentMoniker": "C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\src\\pages\\LibrarianHome\\components\\LibAcctHover.tsx",
+              "RelativeDocumentMoniker": "src\\pages\\LibrarianHome\\components\\LibAcctHover.tsx",
+              "ToolTip": "C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\src\\pages\\LibrarianHome\\components\\LibAcctHover.tsx",
+              "RelativeToolTip": "src\\pages\\LibrarianHome\\components\\LibAcctHover.tsx",
+              "ViewState": "AgIAADkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2024-12-02T00:12:54.577Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "LibNavBar.tsx",
+              "DocumentMoniker": "C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\src\\pages\\LibrarianHome\\components\\LibNavBar.tsx",
+              "RelativeDocumentMoniker": "src\\pages\\LibrarianHome\\components\\LibNavBar.tsx",
+              "ToolTip": "C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\src\\pages\\LibrarianHome\\components\\LibNavBar.tsx",
+              "RelativeToolTip": "src\\pages\\LibrarianHome\\components\\LibNavBar.tsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2024-12-02T00:12:46.875Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "LibSearchBar.tsx",
+              "DocumentMoniker": "C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\src\\pages\\LibrarianHome\\components\\LibSearchBar.tsx",
+              "RelativeDocumentMoniker": "src\\pages\\LibrarianHome\\components\\LibSearchBar.tsx",
+              "ToolTip": "C:\\Users\\Jairus Joshua\\source\\repos\\ThesisTrackingSystem\\src\\pages\\LibrarianHome\\components\\LibSearchBar.tsx",
+              "RelativeToolTip": "src\\pages\\LibrarianHome\\components\\LibSearchBar.tsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2024-12-02T00:12:44.413Z"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 207,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

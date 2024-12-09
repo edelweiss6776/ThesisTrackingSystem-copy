@@ -2,12 +2,14 @@ import * as React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Tabs, Tab, Box, Typography } from "@mui/material";
 import LibAcctHover from "./LibAcctHover";
+import { UserAuth } from "../../../context/AuthContext";
 
 interface NavBarProps {
   id?: string;
 }
 
-const LibNavBar: React.FC<NavBarProps> = () => {
+const LibNavBar: React.FC<NavBarProps> = ({ id }) => {
+  const { logout } = UserAuth();
   const navigate = useNavigate();
   const location = useLocation();
 

@@ -1,13 +1,27 @@
-import React from "react";
-import { Box, Typography, TextField } from "@mui/material";
+import React, { useState } from "react";
+import { Box, Typography } from "@mui/material";
 import LibSearchBar from "./LibSearchBar";
-import FolderOutlinedIcon from '@mui/icons-material/FolderOutlined';
-import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
-import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
-import FileOpenOutlinedIcon from '@mui/icons-material/FileOpenOutlined';
-import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined'; // Importing the Notifications Icon
+import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
+import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
+import EditNoteOutlinedIcon from "@mui/icons-material/EditNoteOutlined";
+import FileOpenOutlinedIcon from "@mui/icons-material/FileOpenOutlined";
+import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 
 const Dashboard: React.FC = () => {
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
+  const handleSearch = () => {
+    console.log(`Search triggered for: ${searchQuery}`);
+    // Add API call or logic to handle search here
+  };
+
+  const stats = [
+    { label: "Total Thesis Files", count: "1234", Icon: FolderOutlinedIcon },
+    { label: "Pending Approvals", count: "56", Icon: AccessTimeOutlinedIcon },
+    { label: "Revisions Required", count: "12", Icon: EditNoteOutlinedIcon },
+    { label: "Categories Managed", count: "8", Icon: FileOpenOutlinedIcon },
+  ];
+
   return (
     <Box
       sx={{
@@ -16,19 +30,19 @@ const Dashboard: React.FC = () => {
         alignItems: "center",
         justifyContent: "center",
         minHeight: "550px",
-        minWidth: "100%",
+        width: "100%",
         backgroundColor: "#9689C2",
         paddingTop: "100px",
         textAlign: "center",
-        position: "relative", 
+        position: "relative",
       }}
     >
       {/* Notification Icon */}
       <Box
         sx={{
           position: "absolute",
-          top: "110px",
-          right: "50px",
+          top: "20px",
+          right: "20px",
           cursor: "pointer",
           color: "#605585",
         }}
@@ -36,25 +50,26 @@ const Dashboard: React.FC = () => {
         <NotificationsNoneOutlinedIcon sx={{ fontSize: 30 }} />
       </Box>
 
-        {/* Search Bar */}
-        <LibSearchBar searchQuery={""} setSearchQuery={() => {}} />
+      {/* Search Bar */}
+      <Box sx={{ marginTop: "20px", marginBottom: "40px", width: "80%" }}>
+        <LibSearchBar
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          onSearch={handleSearch}
+        />
+      </Box>
 
       {/* Stats Boxes */}
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
+          gridTemplateColumns: { xs: "1fr", sm: "repeat(2, 1fr)", md: "repeat(4, 1fr)" },
           gap: "20px",
           width: "90%",
           padding: "20px",
         }}
       >
-        {[ 
-          { label: "Total Thesis Files", count: "1234", Icon: FolderOutlinedIcon },
-          { label: "Pending Approvals", count: "56", Icon: AccessTimeOutlinedIcon },
-          { label: "Revisions Required", count: "12", Icon: EditNoteOutlinedIcon },
-          { label: "Categories Managed", count: "8", Icon: FileOpenOutlinedIcon },
-        ].map((item, index) => (
+        {stats.map((item, index) => (
           <Box
             key={index}
             sx={{
@@ -66,7 +81,7 @@ const Dashboard: React.FC = () => {
               borderRadius: "8px",
               padding: "16px",
               boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-              height: "220px",
+              height: "200px",
             }}
           >
             {/* Icon */}

@@ -1,61 +1,32 @@
 import React, { useState } from 'react';
-import { Box, Avatar, Typography, Popover, MenuItem, Divider } from '@mui/material';
-import { Edit, Settings, History, Logout } from '@mui/icons-material';
+import { Box, Avatar, Typography, Popover } from '@mui/material';
 import { UserAuth } from '../../../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
 
 const AcctHover: React.FC = () => {
-    const { user, logout } = UserAuth();
-    const navigate = useNavigate();
+    const { user } = UserAuth();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const [isHoveringPopover, setIsHoveringPopover] = useState(false);
 
-    const handleMouseEnter = (event: React.MouseEvent<HTMLElement>) => {
+    const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
 
-    const handleMouseLeave = () => {
-        if (!isHoveringPopover) {
-            setAnchorEl(null);
-        }
-    };
-
-    const handlePopoverMouseEnter = () => {
-        setIsHoveringPopover(true);
-    };
-
-    const handlePopoverMouseLeave = () => {
-        setIsHoveringPopover(false);
+    const handlePopoverClose = () => {
         setAnchorEl(null);
     };
 
-    const handleSignOut = async () => {
-        try {
-            await logout();
-            navigate('/'); // Navigate to the login page after logout
-        } catch (error) {
-            console.error('Error during logout:', error);
-        }
-    };
+    const open = Boolean(anchorEl);
 
     return (
-        <Box
-            onMouseLeave={handleMouseLeave}
-            sx={{ display: 'inline-block', cursor: 'pointer', position: 'relative' }}
-        >
-            {/* Avatar */}
-            <Avatar
-                onMouseEnter={(e) => handleMouseEnter(e)}
-                sx={{ width: 40, height: 40 }}
-                src={user?.photoURL || ''}
+        <Box onMouseEnter={handlePopoverOpen} onMouseLeave={handlePopoverClose}>
+            <Avatar 
+                sx={{ width: 40, height: 40, cursor: 'pointer' }} 
+                src={user?.photoURL || ''} 
                 alt={user?.displayName || 'User'}
             />
-
-            {/* Popover */}
             <Popover
+                open={open}
                 anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={handleMouseLeave}
+                onClose={handlePopoverClose}
                 anchorOrigin={{
                     vertical: 'bottom',
                     horizontal: 'right',
@@ -65,53 +36,17 @@ const AcctHover: React.FC = () => {
                     horizontal: 'right',
                 }}
                 disableRestoreFocus
-                PaperProps={{
-                    sx: {
-                        overflow: 'visible', // Prevent cropping
-                        minWidth: '200px', // Set minimum width
-                        maxWidth: '400px', // Set maximum width to avoid excessive expansion
-                        padding: 1, // Optional padding for aesthetics
-                    },
+                sx={{
+                    pointerEvents: 'none',
                 }}
             >
-                {/* Popover Content */}
-                <Box
-                    onMouseEnter={handlePopoverMouseEnter}
-                    onMouseLeave={handlePopoverMouseLeave}
-                >
-                    {/* User Info */}
-                    <Box sx={{ padding: 2, display: 'flex', alignItems: 'center' }}>
-                        <Avatar
-                            sx={{ width: 50, height: 50 }}
-                            src={user?.photoURL || ''}
-                            alt={user?.displayName || 'User'}
-                        />
-                        <Box sx={{ ml: 2 }}>
-                            <Typography variant="body1">{user?.displayName || 'User'}</Typography>
-                            <Typography variant="body2" color="text.secondary">
-                                {user?.email}
-                            </Typography>
-                        </Box>
-                    </Box>
-                    <Divider />
-
-                    {/* Menu Items */}
-                    <MenuItem onClick={() => console.log('Edit Profile')}>
-                        <Edit fontSize="small" sx={{ mr: 2 }} />
-                        Edit Profile
-                    </MenuItem>
-                    <MenuItem onClick={() => console.log('Account Settings')}>
-                        <Settings fontSize="small" sx={{ mr: 2 }} />
-                        Account Settings
-                    </MenuItem>
-                    <MenuItem onClick={() => console.log('Recent Activity')}>
-                        <History fontSize="small" sx={{ mr: 2 }} />
-                        Recent Activity
-                    </MenuItem>
-                    <MenuItem onClick={handleSignOut}>
-                        <Logout fontSize="small" sx={{ mr: 2 }} />
-                        Log Out
-                    </MenuItem>
+                <Box sx={{ padding: 2 }}>
+                    <Typography variant="subtitle1">
+                        {user?.displayName || 'User'}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                        {user?.email}
+                    </Typography>
                 </Box>
             </Popover>
         </Box>
