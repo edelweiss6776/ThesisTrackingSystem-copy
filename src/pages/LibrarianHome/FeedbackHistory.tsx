@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
     CssBaseline,
     AppBar,
     Toolbar,
     Box,
-    Button,
     Paper,
     Table,
     TableBody,
@@ -13,90 +12,82 @@ import {
     TableHead,
     TableRow,
     TablePagination,
+    CircularProgress,
+    Typography,
 } from "@mui/material";
+import axios from "axios";
 import LibNavBar from "./components/LibNavBar";
 import LibSearchBar from "./components/LibSearchBar";
 
-const FeedbackHistory: React.FC = () => {
-    const [feedbackList, setFeedbackList] = useState([
-        { title: "Machine Learning", student: "Juan Dela Cruz", feedback: "Wow!" },
-        { title: "Library Management System", student: "Leo Gabriel", feedback: "Send copy." },
-        { title: "Mini Compiler", student: "Jairus Ramos", feedback: "Borrow." },
-        { title: "Cybersecurity", student: "Alyssa San Pedro", feedback: "Nice." },
-    ]);
-    const [filteredFeedbackList, setFilteredFeedbackList] = useState(feedbackList);
+interface Feedback {
+    id: string;
+    title: string;
+    student: string;
+    feedback: string;
+    timestamp: string; // Ensure this field is correctly defined
+}
 
+const FeedbackHistory: React.FC = () => {
+    const [feedbackList, setFeedbackList] = useState<Feedback[]>([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [totalFeedback, setTotalFeedback] = useState(0);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
-    // Simulate fetching feedback history (mocked for now)
+    const fetchFeedback = useCallback(async () => {
+        setLoading(true);
+        setError("");
+
+        try {
+            const response = await axios.get(`/feedback`, {
+                params: {
+                    page: page + 1,
+                    limit: rowsPerPage,
+                    search: searchQuery,
+                },
+            });
+
+            const { feedback, total } = response.data;
+
+            // Validate the presence of the timestamp
+            feedback.forEach((item: Feedback) => {
+                if (!item.timestamp) {
+                    console.warn(`Missing timestamp for feedback ID: ${item.id}`);
+                }
+            });
+
+            setFeedbackList(feedback);
+            setTotalFeedback(total);
+        } catch (err) {
+            console.error("Error fetching feedback:", err);
+            setError("Failed to fetch feedback. Please try again later.");
+        } finally {
+            setLoading(false);
+        }
+    }, [page, rowsPerPage, searchQuery]);
+
     useEffect(() => {
-        const fetchData = async () => {
-            // Fetch data from an API (mock example)
-            const data = [
-                { title: "Machine Learning", student: "Juan Dela Cruz", feedback: "Wow!" },
-                { title: "Library Management System", student: "Leo Gabriel", feedback: "Send copy." },
-                { title: "Mini Compiler", student: "Jairus Ramos", feedback: "Borrow." },
-                { title: "Cybersecurity", student: "Alyssa San Pedro", feedback: "Nice." },
-            ];
-            setFeedbackList(data);
-            setFilteredFeedbackList(data);
-        };
+        fetchFeedback();
+    }, [fetchFeedback]);
 
-        fetchData();
-    }, []);
-
-    // Filter data based on search query
-    useEffect(() => {
-        const filteredData = feedbackList.filter(
-            (item) =>
-                item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                item.student.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                item.feedback.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-        setFilteredFeedbackList(filteredData);
-    }, [searchQuery, feedbackList]);
-
-    // Pagination handlers
     const handleChangePage = (event: unknown, newPage: number) => setPage(newPage);
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
 
-    const handleCancel = () => {
-        console.log("Cancel action triggered!");
-        // Reset any unsaved changes here (mock example)
+    const handleSearch = (query: string) => {
+        setSearchQuery(query);
+        setPage(0);
     };
-
-    const handleSubmit = () => {
-        console.log("Submit action triggered!");
-        // Process the feedback here (mock example)
-    };
-
-    function handleSearch(): void {
-        throw new Error("Function not implemented.");
-    }
 
     return (
         <>
             <CssBaseline />
-            <AppBar
-                position="fixed"
-                sx={{
-                    backgroundColor: "#D3C5FF",
-                }}
-            >
-                <Toolbar
-                    sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        padding: "8px 16px",
-                    }}
-                >
-                    {/* Navbar */}
+            <AppBar position="fixed" sx={{ backgroundColor: "#D3C5FF" }}>
+                <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 16px" }}>
                     <LibNavBar />
                 </Toolbar>
             </AppBar>
@@ -111,82 +102,77 @@ const FeedbackHistory: React.FC = () => {
                     alignItems: "center",
                 }}
             >
-                {/* Search Bar */}
-                <Box sx={{ marginTop: "25px", marginBottom: "20px" }}>
-                    <LibSearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} onSearch={handleSearch} />
-                </Box>
+                <LibSearchBar
+                    searchQuery={searchQuery}
+                    setSearchQuery={setSearchQuery}
+                    onSearch={handleSearch}
+                />
 
-                {/* Table for Feedback History */}
-                <Paper sx={{ width: "85%", margin: "0 auto" }}>
-                    <TableContainer>
-                        <Table stickyHeader>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell align="center" sx={{ fontWeight: "bold", borderRight: "1px solid #ccc" }}>
-                                        Thesis Title
-                                    </TableCell>
-                                    <TableCell align="center" sx={{ fontWeight: "bold", borderRight: "1px solid #ccc" }}>
-                                        Student Name
-                                    </TableCell>
-                                    <TableCell align="center" sx={{ fontWeight: "bold" }}>
-                                        Feedback
-                                    </TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {filteredFeedbackList
-                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                    .map((row, index) => (
-                                        <TableRow key={index}>
-                                            <TableCell align="left" sx={{ borderRight: "1px solid #ccc" }}>
-                                                {row.title}
+                <Paper sx={{ width: "85%", margin: "0 auto", marginTop: 3 }}>
+                    {loading ? (
+                        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "300px" }}>
+                            <CircularProgress />
+                        </Box>
+                    ) : error ? (
+                        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "300px" }}>
+                            <Typography color="error">{error}</Typography>
+                        </Box>
+                    ) : feedbackList.length === 0 ? (
+                        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "300px" }}>
+                            <Typography>No feedback found.</Typography>
+                        </Box>
+                    ) : (
+                        <>
+                            <TableContainer>
+                                <Table stickyHeader>
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell align="center" sx={{ fontWeight: "bold", borderRight: "1px solid #ccc" }}>
+                                                Thesis Title
                                             </TableCell>
-                                            <TableCell align="left" sx={{ borderRight: "1px solid #ccc" }}>
-                                                {row.student}
+                                            <TableCell align="center" sx={{ fontWeight: "bold", borderRight: "1px solid #ccc" }}>
+                                                Student Name
                                             </TableCell>
-                                            <TableCell align="left">{row.feedback}</TableCell>
+                                            <TableCell align="center" sx={{ fontWeight: "bold", borderRight: "1px solid #ccc" }}>
+                                                Feedback
+                                            </TableCell>
+                                            <TableCell align="center" sx={{ fontWeight: "bold" }}>
+                                                Timestamp
+                                            </TableCell>
                                         </TableRow>
-                                    ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                    <TablePagination
-                        rowsPerPageOptions={[5, 10, 25]}
-                        component="div"
-                        count={filteredFeedbackList.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                    />
+                                    </TableHead>
+                                    <TableBody>
+                                        {feedbackList.map((row) => (
+                                            <TableRow key={row.id}>
+                                                <TableCell align="left" sx={{ borderRight: "1px solid #ccc" }}>
+                                                    {row.title}
+                                                </TableCell>
+                                                <TableCell align="left" sx={{ borderRight: "1px solid #ccc" }}>
+                                                    {row.student}
+                                                </TableCell>
+                                                <TableCell align="left" sx={{ borderRight: "1px solid #ccc" }}>
+                                                    {row.feedback}
+                                                </TableCell>
+                                                <TableCell align="left">
+                                                    {new Date(row.timestamp).toLocaleString()}
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                            <TablePagination
+                                rowsPerPageOptions={[5, 10, 25]}
+                                component="div"
+                                count={totalFeedback}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                onPageChange={handleChangePage}
+                                onRowsPerPageChange={handleChangeRowsPerPage}
+                            />
+                        </>
+                    )}
                 </Paper>
-
-                {/* Submit and Cancel Buttons */}
-                <Box
-                    sx={{
-                        display: "flex",
-                        justifyContent: "flex-end",
-                        width: "85%",
-                        marginTop: "20px",
-                        marginBottom: "20px",
-                        gap: "10px",
-                    }}
-                >
-                    <Button
-                        variant="contained"
-                        sx={{ backgroundColor: "#6A5ACD" }}
-                        onClick={handleCancel}
-                    >
-                        Cancel
-                    </Button>
-                    <Button
-                        variant="contained"
-                        sx={{ backgroundColor: "#605585" }}
-                        onClick={handleSubmit}
-                    >
-                        Submit
-                    </Button>
-                </Box>
             </Box>
         </>
     );

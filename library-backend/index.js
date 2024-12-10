@@ -223,6 +223,257 @@ app.post("/feedback", async (req, res) => {
         res.status(500).send("Failed to submit feedback");
     }
 });
+app.get("/feedback", async (req, res) => {
+    try {
+        const { page = 1, limit = 10 } = req.query;
+        const feedbackRef = db.collection("feedback");
+
+        // Order by timestamp and paginate using startAfter
+        const snapshot = await feedbackRef
+            .orderBy("timestamp", "desc")
+            .limit(Number(limit))
+            .get();
+
+        if (snapshot.empty) {
+            return res.status(200).json({ feedback: [], total: 0 });
+        }
+
+        const feedback = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+        }));
+
+        const totalSnapshot = await feedbackRef.get();
+        const total = totalSnapshot.size;
+
+        res.status(200).json({ feedback, total });
+    } catch (error) {
+        console.error("Error fetching feedback:", error);
+        res.status(500).json({ error: "Failed to fetch feedback." });
+    }
+});
+// Fetch all users
+app.get("/users", async (req, res) => {
+    try {
+        const usersSnapshot = await db.collection("users").get();
+        const users = usersSnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+        }));
+        res.status(200).json(users);
+    } catch (error) {
+        console.error("Error fetching users:", error);
+        res.status(500).json({ error: "Failed to fetch users" });
+    }
+});
+
+// Fetch all roles
+app.get("/roles", async (req, res) => {
+    try {
+        const rolesSnapshot = await db.collection("roles").get();
+        const roles = rolesSnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+        }));
+        res.status(200).json(roles);
+    } catch (error) {
+        console.error("Error fetching roles:", error);
+        res.status(500).json({ error: "Failed to fetch roles" });
+    }
+});
+
+// Add a new user
+app.post("/users", async (req, res) => {
+    try {
+        const { OAuthID, userID, userName, firstName, lastName, email, roleID, dateCreated } = req.body;
+
+        // Ensure the required fields are provided
+        if (!OAuthID || !userID || !userName || !firstName || !lastName || !email || !roleID || !dateCreated) {
+            return res.status(400).json({ error: "All fields are required" });
+        }
+
+        const userRef = await db.collection("users").add({
+            OAuthID,
+            userID,
+            userName,
+            firstName,
+            lastName,
+            email,
+            roleID,
+            dateCreated,
+        });
+
+        res.status(201).json({ message: "User added successfully", userId: userRef.id });
+    } catch (error) {
+        console.error("Error adding user:", error);
+        res.status(500).json({ error: "Failed to add user" });
+    }
+});
+
+// Update user details
+app.put("/users/:id", async (req, res) => {
+    const userId = req.params.id;
+    const { userName, firstName, lastName, email, roleID } = req.body;
+
+    try {
+        const userRef = db.collection("users").doc(userId);
+        const userSnapshot = await userRef.get();
+
+        if (!userSnapshot.exists) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        await userRef.update({
+            userName,
+            firstName,
+            lastName,
+            email,
+            roleID,
+        });
+
+        res.status(200).json({ message: "User updated successfully" });
+    } catch (error) {
+        console.error("Error updating user:", error);
+        res.status(500).json({ error: "Failed to update user" });
+    }
+});
+
+// Deactivate user
+app.delete("/users/:id", async (req, res) => {
+    const userId = req.params.id;
+
+    try {
+        const userRef = db.collection("users").doc(userId);
+        const userSnapshot = await userRef.get();
+
+        if (!userSnapshot.exists) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        await userRef.delete();
+        res.status(200).json({ message: "User deactivated successfully" });
+    } catch (error) {
+        console.error("Error deactivating user:", error);
+        res.status(500).json({ error: "Failed to deactivate user" });
+    }
+});
+// Express route to update user status
+app.put("/users/:id/status", async (req, res) => {
+    const userId = req.params.id;
+    const { status } = req.body; // Expecting the new status ('active' or 'inactive')
+
+    try {
+        // Update the status of the user in Firestore
+        const userRef = db.collection("users").doc(userId);
+        await userRef.update({
+            status: status,
+        });
+        res.status(200).send({ message: "User status updated successfully." });
+    } catch (error) {
+        console.error("Error updating status:", error);
+        res.status(500).send({ message: "Error updating status" });
+    }
+});
+app.post("/login", async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const userRef = db.collection("users").where("email", "==", email);
+        const snapshot = await userRef.get();
+
+        if (snapshot.empty) {
+            return res.status(404).send({ message: "User not found" });
+        }
+
+        const userDoc = snapshot.docs[0];
+        const userId = userDoc.id;
+
+        // Verify the password (assume success for now)
+        await db.collection("users").doc(userId).update({
+            isLoggedIn: true,
+            lastLogin: new Date(),
+        });
+
+        res.status(200).send({ message: "Login successful", userId });
+    } catch (error) {
+        console.error("Login error:", error);
+        res.status(500).send({ message: "Login failed" });
+    }
+});
+app.post("/logout", async (req, res) => {
+    const { userId } = req.body;
+
+    try {
+        await db.collection("users").doc(userId).update({
+            isLoggedIn: false,
+        });
+
+        res.status(200).send({ message: "Logout successful" });
+    } catch (error) {
+        console.error("Logout error:", error);
+        res.status(500).send({ message: "Logout failed" });
+    }
+});
+app.get("/logged-in-users", async (req, res) => {
+    try {
+        const usersRef = db.collection("users").where("isLoggedIn", "==", true);
+        const snapshot = await usersRef.get();
+
+        const loggedInUsers = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+        }));
+
+        res.status(200).send(loggedInUsers);
+    } catch (error) {
+        console.error("Error fetching logged-in users:", error);
+        res.status(500).send({ message: "Failed to fetch logged-in users" });
+    }
+});
+app.get("/api/theses/:id", async (req, res) => {
+    const thesisId = req.params.id;
+
+    try {
+        const thesisDoc = await db.collection("theses").doc(thesisId).get();
+        if (!thesisDoc.exists) {
+            return res.status(404).json({ message: "Thesis not found" });
+        }
+
+        const thesisData = thesisDoc.data();
+        res.json({
+            id: thesisDoc.id,
+            ABSTRACT: thesisData.ABSTRACT,
+        });
+    } catch (error) {
+        console.error("Error fetching thesis:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+});
+// This is the correct version
+app.get("/api/theses/:id", async (req, res) => {
+    const thesisId = req.params.id;
+
+    try {
+        const thesisDoc = await db.collection("theses").doc(thesisId).get();
+        if (!thesisDoc.exists) {
+            return res.status(404).json({ message: "Thesis not found" });
+        }
+
+        // Fetch all data from the thesis document
+        const thesisData = thesisDoc.data();
+
+        // Return all the fields
+        res.json({
+            id: thesisDoc.id,
+            ...thesisData,  // Spread operator to include all fields from thesisData
+        });
+    } catch (error) {
+        console.error("Error fetching thesis:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+});
+
+
 
 // Start server
 const PORT = process.env.PORT || 5000;

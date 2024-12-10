@@ -29,7 +29,8 @@ const ThesisCard: React.FC<{
     thesis: Thesis;
     isBookmarked: boolean;
     onBookmarkToggle: (id: string) => void;
-}> = ({ thesis, isBookmarked, onBookmarkToggle }) => (
+    onViewAbstract: (ABSTRACT: string) => void; // Updated
+}> = ({ thesis, isBookmarked, onBookmarkToggle, onViewAbstract }) => (
     <Box
         sx={{
             border: '1px solid #ccc',
@@ -63,13 +64,17 @@ const ThesisCard: React.FC<{
             variant={isBookmarked ? 'contained' : 'outlined'}
             color="primary"
             onClick={() => onBookmarkToggle(thesis.id)}
+            sx={{ marginBottom: 1 }}
         >
             {isBookmarked ? 'Unbookmark' : 'Bookmark'}
+        </Button>
+        <Button variant="text" onClick={() => onViewAbstract(thesis.ABSTRACT)}>
+            View Abstract
         </Button>
     </Box>
 );
 
-const ShelfThesis: React.FC = () => {
+const ShelfThesis: React.FC<{ onViewAbstract: (abstract: string) => void }> = ({ onViewAbstract }) => {
     const [theses, setTheses] = useState<Thesis[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
@@ -131,8 +136,10 @@ const ShelfThesis: React.FC = () => {
         const bookmarkedTheses = filtered.filter((thesis) => bookmarked.has(thesis.id));
         const nonBookmarkedTheses = filtered.filter((thesis) => !bookmarked.has(thesis.id));
 
-        // Sort each group
+        // Sort each group only if sortKey is set
         const sortFn = (a: Thesis, b: Thesis) => {
+            if (!sortKey) return 0;
+
             const valueA = a[sortKey as keyof Thesis];
             const valueB = b[sortKey as keyof Thesis];
 
@@ -165,6 +172,16 @@ const ShelfThesis: React.FC = () => {
             <Box sx={{ textAlign: 'center', padding: 4 }}>
                 <Typography variant="h6" color="error">
                     Failed to load theses. Please try again later.
+                </Typography>
+            </Box>
+        );
+    }
+
+    if (filteredAndSortedTheses.length === 0) {
+        return (
+            <Box sx={{ textAlign: 'center', padding: 4 }}>
+                <Typography variant="h6" color="textSecondary">
+                    No theses found.
                 </Typography>
             </Box>
         );
@@ -206,6 +223,7 @@ const ShelfThesis: React.FC = () => {
                             thesis={thesis}
                             isBookmarked={bookmarked.has(thesis.id)}
                             onBookmarkToggle={toggleBookmark}
+                            onViewAbstract={onViewAbstract} // Pass the prop
                         />
                     </Grid>
                 ))}

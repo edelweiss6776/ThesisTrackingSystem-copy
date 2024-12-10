@@ -4,10 +4,20 @@ import { Box, TextField } from "@mui/material";
 interface LibSearchBarProps {
     searchQuery: string;
     setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
-    onSearch: () => void; // Callback to trigger the search action
+    onSearch: (query: string) => void; // Update to pass the query as an argument
 }
 
 const LibSearchBar: React.FC<LibSearchBarProps> = ({ searchQuery, setSearchQuery, onSearch }) => {
+    const handleSearchClick = () => {
+        onSearch(searchQuery); // Pass the current search query when clicking the search button
+    };
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newQuery = e.target.value;
+        setSearchQuery(newQuery);
+        onSearch(newQuery); // Optionally trigger search dynamically while typing
+    };
+
     return (
         <Box
             sx={{
@@ -22,7 +32,7 @@ const LibSearchBar: React.FC<LibSearchBarProps> = ({ searchQuery, setSearchQuery
                 variant="outlined"
                 placeholder="Search..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={handleInputChange} // Update query on input change
                 sx={{
                     minWidth: "350px",
                     height: "45px",
@@ -41,7 +51,7 @@ const LibSearchBar: React.FC<LibSearchBarProps> = ({ searchQuery, setSearchQuery
             />
             <Box
                 component="button"
-                onClick={onSearch}
+                onClick={handleSearchClick} // Trigger search explicitly on button click
                 sx={{
                     height: "45px",
                     padding: "0 20px",

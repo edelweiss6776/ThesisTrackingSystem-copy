@@ -4,8 +4,9 @@
     "\\library-backend",
     "\\src",
     "\\src\\pages",
-    "\\src\\pages\\AdminHome"
+    "\\src\\pages\\UserHome",
+    "\\src\\pages\\UserHome\\components"
   ],
-  "SelectedNode": "\\library-backend",
+  "SelectedNode": "\\src\\pages\\UserHome\\components\\ShelfThesis.tsx",
   "PreviewInSolutionExplorer": false
 }
