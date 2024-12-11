@@ -4,7 +4,8 @@
     "\\library-backend",
     "\\src",
     "\\src\\pages",
-    "\\src\\pages\\LibrarianHome"
+    "\\src\\pages\\AdminHome"
   ],
+  "SelectedNode": "\\src\\pages\\AdminHome\\UserMngmt.tsx",
   "PreviewInSolutionExplorer": false
 }

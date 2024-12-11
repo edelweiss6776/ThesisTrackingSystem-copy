@@ -53,9 +53,11 @@ const UserMngmt: React.FC = () => {
     const fetchData = async (endpoint: string, setter: React.Dispatch<React.SetStateAction<any>>) => {
         try {
             const response = await axios.get(endpoint);
-            setter(response.data);
+            const data = Array.isArray(response.data) ? response.data : [];
+            setter(data);
         } catch (error) {
             console.error(`Error fetching ${endpoint}:`, error);
+            setter([]); // Fallback to an empty array on error
         }
     };
 
@@ -141,7 +143,7 @@ const UserMngmt: React.FC = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((user) => (
+                                {Array.isArray(users) && users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((user) => (
                                     <TableRow key={user.id}>
                                         <TableCell align="center">{user.userName}</TableCell>
                                         <TableCell align="center">{user.email}</TableCell>
