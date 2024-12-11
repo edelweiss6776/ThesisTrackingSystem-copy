@@ -3,6 +3,7 @@ import { UserAuth } from "../context/AuthContext";
 import { useNavigate } from 'react-router-dom';
 import { Container, CssBaseline, Box, Typography, Button, Avatar } from "@mui/material";
 import BookTwoToneIcon from '@mui/icons-material/BookTwoTone';
+import logo from "../images/ThesisphereLogo.png";
 import bg from "../images/background.jpeg";
 
 const Login: React.FC = () => {
@@ -44,11 +45,17 @@ const Login: React.FC = () => {
                     alignItems: "center",
                 }}
             >
-                <Avatar sx={{ width: 40, height: 40, mr: 1, bgcolor: "#221D33" }}>
-                    <BookTwoToneIcon sx={{ color: "white" }} />
+                <Avatar sx={{ width: 80, height: 80, mr: 1, bgcolor: "#ffffff", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <img
+                        src={logo}
+                        alt="Thesisphere Logo"
+                        style={{ width: '80%', height: '80%', objectFit: 'contain' }}
+                    />
                 </Avatar>
+
+
                 <Typography variant="h5" color="#221D33" sx={{ fontWeight: 'bold' }}>
-                    LIBRARY
+                    THESISPHERE
                 </Typography>
             </Box>
 

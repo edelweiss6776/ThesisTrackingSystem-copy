@@ -3,9 +3,11 @@
     "",
     "\\library-backend",
     "\\src",
+    "\\src\\images",
     "\\src\\pages",
-    "\\src\\pages\\AdminHome"
+    "\\src\\pages\\LibrarianHome",
+    "\\src\\pages\\UserHome"
   ],
-  "SelectedNode": "\\library-backend",
+  "SelectedNode": "\\src\\images\\ThesisphereLogo.png",
   "PreviewInSolutionExplorer": false
 }

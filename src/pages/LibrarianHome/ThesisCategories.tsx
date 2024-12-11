@@ -143,9 +143,9 @@ const ThesisCategories: React.FC = () => {
                 {/* Search Bar */}
                 <Box sx={{ marginTop: "25px", marginBottom: "5px" }}>
                     <LibSearchBar
-                        searchQuery={searchQuery}          // Passed searchQuery state
-                        setSearchQuery={setSearchQuery}    // Passed setSearchQuery function
-                        onSearch={handleSearch}           // Called handleSearch on search
+                        searchQuery={searchQuery}          
+                        setSearchQuery={setSearchQuery}    
+                        onSearch={handleSearch}          
                     />
                 </Box>
 

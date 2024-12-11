@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Typography } from "@mui/material";
 import LibSearchBar from "./LibSearchBar";
 import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
@@ -6,20 +6,36 @@ import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 import EditNoteOutlinedIcon from "@mui/icons-material/EditNoteOutlined";
 import FileOpenOutlinedIcon from "@mui/icons-material/FileOpenOutlined";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
+import axios from "axios";
 
 const Dashboard: React.FC = () => {
     const [searchQuery, setSearchQuery] = useState<string>("");
+    const [thesisDataCount, setThesisDataCount] = useState<number>(0);
 
     const handleSearch = () => {
         console.log(`Search triggered for: ${searchQuery}`);
-        // Add API call or logic to handle search here
+        
     };
 
+    
+    useEffect(() => {
+        const fetchThesisCount = async () => {
+            try {
+                const response = await axios.get("http://localhost:5000/api/theses/count");
+                setThesisDataCount(response.data.count);
+            } catch (error) {
+                console.error("Error fetching thesis count:", error);
+            }
+        };
+
+        fetchThesisCount();
+    }, []);
+
     const stats = [
-        { label: "Total Thesis Files", count: "1234", Icon: FolderOutlinedIcon },
-        { label: "Pending Approvals", count: "56", Icon: AccessTimeOutlinedIcon },
-        { label: "Revisions Required", count: "12", Icon: EditNoteOutlinedIcon },
-        { label: "Categories Managed", count: "8", Icon: FileOpenOutlinedIcon },
+        { label: "Total Thesis Files", count: thesisDataCount, Icon: FolderOutlinedIcon },
+        { label: "Pending Approvals", count: 56, Icon: AccessTimeOutlinedIcon },
+        { label: "Revisions Required", count: 12, Icon: EditNoteOutlinedIcon },
+        { label: "Categories Managed", count: 8, Icon: FileOpenOutlinedIcon },
     ];
 
     return (

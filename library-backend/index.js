@@ -491,6 +491,18 @@ app.get('/api/theses/:thesisNo', async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch abstract' });
     }
 });
+// Route to get the total thesis count
+app.get("/api/theses/count", async (req, res) => {
+    try {
+        const thesesCollection = db.collection("theses");
+        const snapshot = await thesesCollection.get();
+        res.json({ count: snapshot.size });
+    } catch (error) {
+        console.error("Error fetching thesis count:", error);
+        res.status(500).json({ error: "Failed to fetch thesis count" });
+    }
+});
+
 
 
 
