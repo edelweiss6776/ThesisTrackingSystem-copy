@@ -18,13 +18,15 @@ import {
 import axios from "axios";
 import LibNavBar from "./components/LibNavBar";
 import LibSearchBar from "./components/LibSearchBar";
+import { format } from "date-fns";
 
 interface Feedback {
     id: string;
     title: string;
     student: string;
     feedback: string;
-    timestamp: string; // Ensure this field is correctly defined
+    timestamp: any; // Firestore Timestamp or ISO string
+    formattedTimestamp?: string;
 }
 
 const FeedbackHistory: React.FC = () => {
@@ -36,6 +38,24 @@ const FeedbackHistory: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
+    // Format timestamp using date-fns
+    const formatTimestamp = (timestamp: any): string => {
+        try {
+            const date =
+                typeof timestamp === "string"
+                    ? new Date(timestamp) // Handle ISO string
+                    : timestamp?.toDate(); // Handle Firestore Timestamp
+
+            if (date instanceof Date && !isNaN(date.getTime())) {
+                return format(date, "MMM dd, yyyy hh:mm:ss a");
+            }
+            throw new Error("Invalid Date");
+        } catch (error) {
+            console.error("Error formatting timestamp:", error);
+            return "Invalid Date";
+        }
+    };
+
     const fetchFeedback = useCallback(async () => {
         setLoading(true);
         setError("");
@@ -45,20 +65,18 @@ const FeedbackHistory: React.FC = () => {
                 params: {
                     page: page + 1,
                     limit: rowsPerPage,
-                    search: searchQuery,
                 },
             });
 
-            const { feedback, total } = response.data;
+            const { feedback = [], total = 0 } = response.data;
 
-            // Validate the presence of the timestamp
-            feedback.forEach((item: Feedback) => {
-                if (!item.timestamp) {
-                    console.warn(`Missing timestamp for feedback ID: ${item.id}`);
-                }
-            });
+            // Format timestamps
+            const feedbackWithFormattedTimestamps = feedback.map((item: Feedback) => ({
+                ...item,
+                formattedTimestamp: formatTimestamp(item.timestamp),
+            }));
 
-            setFeedbackList(feedback);
+            setFeedbackList(feedbackWithFormattedTimestamps);
             setTotalFeedback(total);
         } catch (err) {
             console.error("Error fetching feedback:", err);
@@ -66,7 +84,7 @@ const FeedbackHistory: React.FC = () => {
         } finally {
             setLoading(false);
         }
-    }, [page, rowsPerPage, searchQuery]);
+    }, [page, rowsPerPage]);
 
     useEffect(() => {
         fetchFeedback();
@@ -154,7 +172,7 @@ const FeedbackHistory: React.FC = () => {
                                                     {row.feedback}
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    {new Date(row.timestamp).toLocaleString()}
+                                                    {row.formattedTimestamp}
                                                 </TableCell>
                                             </TableRow>
                                         ))}

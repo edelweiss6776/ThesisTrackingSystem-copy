@@ -228,30 +228,53 @@ app.get("/feedback", async (req, res) => {
         const { page = 1, limit = 10 } = req.query;
         const feedbackRef = db.collection("feedback");
 
-        // Order by timestamp and paginate using startAfter
-        const snapshot = await feedbackRef
-            .orderBy("timestamp", "desc")
-            .limit(Number(limit))
-            .get();
+        // Convert page and limit to numbers
+        const pageNumber = Number(page);
+        const pageLimit = Number(limit);
 
-        if (snapshot.empty) {
-            return res.status(200).json({ feedback: [], total: 0 });
+        // Validate limit and page
+        if (isNaN(pageNumber) || isNaN(pageLimit) || pageLimit <= 0 || pageNumber <= 0) {
+            return res.status(400).json({ error: "Invalid page or limit." });
         }
 
+        // Create the query with ordering and limit
+        let query = feedbackRef.orderBy("timestamp", "desc").limit(pageLimit);
+
+        // Handle pagination by starting after the last document of the previous page
+        if (pageNumber > 1) {
+            // Get the last document of the previous page
+            const previousPageSnapshot = await feedbackRef
+                .orderBy("timestamp", "desc")
+                .limit((pageNumber - 1) * pageLimit)
+                .get();
+
+            const lastDoc = previousPageSnapshot.docs[previousPageSnapshot.docs.length - 1];
+            if (lastDoc) {
+                query = query.startAfter(lastDoc);
+            }
+        }
+
+        // Fetch the feedbacks for the current page
+        const snapshot = await query.get();
         const feedback = snapshot.docs.map((doc) => ({
             id: doc.id,
             ...doc.data(),
+            timestamp: doc.data().timestamp?.toDate().toISOString(), // Ensure timestamp is ISO string
         }));
 
+        // Fetch total count of feedbacks
         const totalSnapshot = await feedbackRef.get();
         const total = totalSnapshot.size;
 
         res.status(200).json({ feedback, total });
     } catch (error) {
         console.error("Error fetching feedback:", error);
-        res.status(500).json({ error: "Failed to fetch feedback." });
+        res.status(500).json({ feedback: [], total: 0, error: "Failed to fetch feedback." });
     }
 });
+
+
+
 // Fetch all users
 app.get("/users", async (req, res) => {
     try {
@@ -449,27 +472,23 @@ app.get("/api/theses/:id", async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
     }
 });
-// This is the correct version
-app.get("/api/theses/:id", async (req, res) => {
-    const thesisId = req.params.id;
+app.get('/api/theses/:thesisNo', async (req, res) => {
+    const thesisNo = req.params.thesisNo;
 
     try {
-        const thesisDoc = await db.collection("theses").doc(thesisId).get();
-        if (!thesisDoc.exists) {
-            return res.status(404).json({ message: "Thesis not found" });
+        // Search for the thesis document by THESIS_NO
+        const thesisSnapshot = await db.collection('theses').where('THESIS_NO', '==', thesisNo).get();
+
+        if (thesisSnapshot.empty) {
+            return res.status(404).json({ error: 'Thesis not found' });
         }
 
-        // Fetch all data from the thesis document
-        const thesisData = thesisDoc.data();
-
-        // Return all the fields
-        res.json({
-            id: thesisDoc.id,
-            ...thesisData,  // Spread operator to include all fields from thesisData
-        });
+        // Assuming there is only one thesis with a specific THESIS_NO
+        const thesis = thesisSnapshot.docs[0].data();
+        res.json({ ABSTRACT: thesis.ABSTRACT });
     } catch (error) {
-        console.error("Error fetching thesis:", error);
-        res.status(500).json({ message: "Internal Server Error" });
+        console.error('Error fetching abstract:', error);
+        res.status(500).json({ error: 'Failed to fetch abstract' });
     }
 });
 

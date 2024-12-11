@@ -10,6 +10,10 @@ import {
     TextField,
     MenuItem,
     IconButton,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle
 } from '@mui/material';
 import DefaultCover from '../../../images/DefaultCover.jpg';
 import axios from 'axios';
@@ -29,7 +33,7 @@ const ThesisCard: React.FC<{
     thesis: Thesis;
     isBookmarked: boolean;
     onBookmarkToggle: (id: string) => void;
-    onViewAbstract: (ABSTRACT: string) => void; // Updated
+    onViewAbstract: (ABSTRACT: string) => void; // This is passed down to view the abstract.
 }> = ({ thesis, isBookmarked, onBookmarkToggle, onViewAbstract }) => (
     <Box
         sx={{
@@ -82,6 +86,9 @@ const ShelfThesis: React.FC<{ onViewAbstract: (abstract: string) => void }> = ({
     const [sortKey, setSortKey] = useState('');
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
     const [bookmarked, setBookmarked] = useState<Set<string>>(new Set());
+
+    const [openDialog, setOpenDialog] = useState(false);
+    const [currentAbstract, setCurrentAbstract] = useState('');
 
     useEffect(() => {
         const fetchTheses = async () => {
@@ -159,6 +166,16 @@ const ShelfThesis: React.FC<{ onViewAbstract: (abstract: string) => void }> = ({
         return [...bookmarkedTheses.sort(sortFn), ...nonBookmarkedTheses.sort(sortFn)];
     }, [theses, filter, sortKey, sortOrder, bookmarked]);
 
+    const handleViewAbstract = (abstract: string) => {
+        setCurrentAbstract(abstract);
+        setOpenDialog(true);
+    };
+
+    const closeDialog = () => {
+        setOpenDialog(false);
+        setCurrentAbstract('');
+    };
+
     if (loading) {
         return (
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
@@ -223,11 +240,24 @@ const ShelfThesis: React.FC<{ onViewAbstract: (abstract: string) => void }> = ({
                             thesis={thesis}
                             isBookmarked={bookmarked.has(thesis.id)}
                             onBookmarkToggle={toggleBookmark}
-                            onViewAbstract={onViewAbstract} // Pass the prop
+                            onViewAbstract={handleViewAbstract} // Updated to handle abstract
                         />
                     </Grid>
                 ))}
             </Grid>
+
+            {/* Dialog to view abstract */}
+            <Dialog open={openDialog} onClose={closeDialog}>
+                <DialogTitle>Abstract</DialogTitle>
+                <DialogContent>
+                    <Typography>{currentAbstract}</Typography>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={closeDialog} color="primary">
+                        Close
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 };
