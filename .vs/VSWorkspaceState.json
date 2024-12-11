@@ -4,9 +4,7 @@
     "\\library-backend",
     "\\src",
     "\\src\\pages",
-    "\\src\\pages\\UserHome",
-    "\\src\\pages\\UserHome\\components"
+    "\\src\\pages\\LibrarianHome"
   ],
-  "SelectedNode": "\\package.json",
   "PreviewInSolutionExplorer": false
 }

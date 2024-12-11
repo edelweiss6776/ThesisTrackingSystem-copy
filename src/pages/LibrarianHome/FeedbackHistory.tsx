@@ -15,7 +15,7 @@ import {
     CircularProgress,
     Typography,
 } from "@mui/material";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import LibNavBar from "./components/LibNavBar";
 import LibSearchBar from "./components/LibSearchBar";
 import { format } from "date-fns";
@@ -25,8 +25,17 @@ interface Feedback {
     title: string;
     student: string;
     feedback: string;
-    timestamp: any; // Firestore Timestamp or ISO string
+    timestamp: string | { toDate: () => Date }; // Firestore Timestamp or ISO string
     formattedTimestamp?: string;
+}
+
+interface FeedbackResponse {
+    feedback: Feedback[];
+    total: number;
+}
+
+interface AxiosErrorResponse {
+    message?: string;
 }
 
 const FeedbackHistory: React.FC = () => {
@@ -39,17 +48,14 @@ const FeedbackHistory: React.FC = () => {
     const [error, setError] = useState("");
 
     // Format timestamp using date-fns
-    const formatTimestamp = (timestamp: any): string => {
+    const formatTimestamp = (timestamp: string | { toDate: () => Date }): string => {
         try {
             const date =
                 typeof timestamp === "string"
-                    ? new Date(timestamp) // Handle ISO string
-                    : timestamp?.toDate(); // Handle Firestore Timestamp
+                    ? new Date(timestamp)
+                    : timestamp.toDate(); // Handle Firestore Timestamp
 
-            if (date instanceof Date && !isNaN(date.getTime())) {
-                return format(date, "MMM dd, yyyy hh:mm:ss a");
-            }
-            throw new Error("Invalid Date");
+            return !isNaN(date.getTime()) ? format(date, "MMM dd, yyyy hh:mm:ss a") : "Invalid Date";
         } catch (error) {
             console.error("Error formatting timestamp:", error);
             return "Invalid Date";
@@ -61,10 +67,11 @@ const FeedbackHistory: React.FC = () => {
         setError("");
 
         try {
-            const response = await axios.get(`/feedback`, {
+            const response = await axios.get<FeedbackResponse>(`/feedback`, {
                 params: {
                     page: page + 1,
                     limit: rowsPerPage,
+                    search: searchQuery, // Include search query
                 },
             });
 
@@ -79,12 +86,17 @@ const FeedbackHistory: React.FC = () => {
             setFeedbackList(feedbackWithFormattedTimestamps);
             setTotalFeedback(total);
         } catch (err) {
-            console.error("Error fetching feedback:", err);
-            setError("Failed to fetch feedback. Please try again later.");
+            const axiosError = err as AxiosError<AxiosErrorResponse>;
+            console.error("Error fetching feedback:", axiosError);
+
+            setError(
+                axiosError.response?.data?.message ||
+                "Failed to fetch feedback. Please try again later."
+            );
         } finally {
             setLoading(false);
         }
-    }, [page, rowsPerPage]);
+    }, [page, rowsPerPage, searchQuery]);
 
     useEffect(() => {
         fetchFeedback();
@@ -105,7 +117,14 @@ const FeedbackHistory: React.FC = () => {
         <>
             <CssBaseline />
             <AppBar position="fixed" sx={{ backgroundColor: "#D3C5FF" }}>
-                <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 16px" }}>
+                <Toolbar
+                    sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        padding: "8px 16px",
+                    }}
+                >
                     <LibNavBar />
                 </Toolbar>
             </AppBar>
@@ -128,15 +147,36 @@ const FeedbackHistory: React.FC = () => {
 
                 <Paper sx={{ width: "85%", margin: "0 auto", marginTop: 3 }}>
                     {loading ? (
-                        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "300px" }}>
+                        <Box
+                            sx={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                height: "300px",
+                            }}
+                        >
                             <CircularProgress />
                         </Box>
                     ) : error ? (
-                        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "300px" }}>
+                        <Box
+                            sx={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                height: "300px",
+                            }}
+                        >
                             <Typography color="error">{error}</Typography>
                         </Box>
                     ) : feedbackList.length === 0 ? (
-                        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "300px" }}>
+                        <Box
+                            sx={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                height: "300px",
+                            }}
+                        >
                             <Typography>No feedback found.</Typography>
                         </Box>
                     ) : (
@@ -145,13 +185,22 @@ const FeedbackHistory: React.FC = () => {
                                 <Table stickyHeader>
                                     <TableHead>
                                         <TableRow>
-                                            <TableCell align="center" sx={{ fontWeight: "bold", borderRight: "1px solid #ccc" }}>
+                                            <TableCell
+                                                align="center"
+                                                sx={{ fontWeight: "bold", borderRight: "1px solid #ccc" }}
+                                            >
                                                 Thesis Title
                                             </TableCell>
-                                            <TableCell align="center" sx={{ fontWeight: "bold", borderRight: "1px solid #ccc" }}>
+                                            <TableCell
+                                                align="center"
+                                                sx={{ fontWeight: "bold", borderRight: "1px solid #ccc" }}
+                                            >
                                                 Student Name
                                             </TableCell>
-                                            <TableCell align="center" sx={{ fontWeight: "bold", borderRight: "1px solid #ccc" }}>
+                                            <TableCell
+                                                align="center"
+                                                sx={{ fontWeight: "bold", borderRight: "1px solid #ccc" }}
+                                            >
                                                 Feedback
                                             </TableCell>
                                             <TableCell align="center" sx={{ fontWeight: "bold" }}>
@@ -162,18 +211,25 @@ const FeedbackHistory: React.FC = () => {
                                     <TableBody>
                                         {feedbackList.map((row) => (
                                             <TableRow key={row.id}>
-                                                <TableCell align="left" sx={{ borderRight: "1px solid #ccc" }}>
+                                                <TableCell
+                                                    align="left"
+                                                    sx={{ borderRight: "1px solid #ccc" }}
+                                                >
                                                     {row.title}
                                                 </TableCell>
-                                                <TableCell align="left" sx={{ borderRight: "1px solid #ccc" }}>
+                                                <TableCell
+                                                    align="left"
+                                                    sx={{ borderRight: "1px solid #ccc" }}
+                                                >
                                                     {row.student}
                                                 </TableCell>
-                                                <TableCell align="left" sx={{ borderRight: "1px solid #ccc" }}>
+                                                <TableCell
+                                                    align="left"
+                                                    sx={{ borderRight: "1px solid #ccc" }}
+                                                >
                                                     {row.feedback}
                                                 </TableCell>
-                                                <TableCell align="left">
-                                                    {row.formattedTimestamp}
-                                                </TableCell>
+                                                <TableCell align="left">{row.formattedTimestamp}</TableCell>
                                             </TableRow>
                                         ))}
                                     </TableBody>
