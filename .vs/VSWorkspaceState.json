@@ -5,9 +5,12 @@
     "\\src",
     "\\src\\images",
     "\\src\\pages",
+    "\\src\\pages\\GuestMode",
+    "\\src\\pages\\GuestMode\\components",
     "\\src\\pages\\LibrarianHome",
-    "\\src\\pages\\UserHome"
+    "\\src\\pages\\UserHome",
+    "\\src\\pages\\UserHome\\components"
   ],
-  "SelectedNode": "\\src\\images\\ThesisphereLogo.png",
+  "SelectedNode": "\\library-backend",
   "PreviewInSolutionExplorer": false
 }

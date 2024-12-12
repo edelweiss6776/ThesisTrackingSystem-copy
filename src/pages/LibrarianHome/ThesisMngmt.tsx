@@ -159,7 +159,7 @@ const ThesisMngmt: React.FC = () => {
                     />
                 </Box>
 
-                <Box sx={{ textAlign: "right", margin: "20px" }}>
+                <Box sx={{ textAlign: "right", marginBottom: "20px", marginRight: "120px" }}>
                     <Button
                         variant="contained"
                         startIcon={<Add />}
@@ -280,7 +280,8 @@ const ThesisMngmt: React.FC = () => {
                         fullWidth
                         sx={{ marginBottom: 2 }}
                     />
-                    <Button variant="contained" component="label" sx={{ marginBottom: 2 }}>
+
+                    <Button variant="contained" component="label" sx={{ marginRight: "10px" }}>
                         Upload PDF
                         <input type="file" hidden onChange={handleFileChange} />
                     </Button>

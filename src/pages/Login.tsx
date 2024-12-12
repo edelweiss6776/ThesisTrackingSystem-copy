@@ -2,17 +2,19 @@ import React from 'react';
 import { UserAuth } from "../context/AuthContext";
 import { useNavigate } from 'react-router-dom';
 import { Container, CssBaseline, Box, Typography, Button, Avatar } from "@mui/material";
-import BookTwoToneIcon from '@mui/icons-material/BookTwoTone';
-import logo from "../images/ThesisphereLogo.png";
 import bg from "../images/background.jpeg";
+import logo from "../images/ThesisphereLogo.png";
+
 
 const Login: React.FC = () => {
     const { googleSignIn } = UserAuth();
     const navigate = useNavigate();
 
+
     const handleGoogleSignIn = async (role: string) => {
         try {
             await googleSignIn();
+
 
             switch (role) {
                 case 'User':
@@ -25,16 +27,18 @@ const Login: React.FC = () => {
                     navigate('/AdminHome');
                     break;
                 default:
-                    navigate('/Home');
+                    navigate('/GuestShelf');
             }
         } catch (error) {
             console.error(error);
         }
     };
 
+
     return (
         <>
             <CssBaseline />
+
 
             <Box
                 sx={{
@@ -45,19 +49,20 @@ const Login: React.FC = () => {
                     alignItems: "center",
                 }}
             >
-                <Avatar sx={{ width: 80, height: 80, mr: 1, bgcolor: "#ffffff", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <img
-                        src={logo}
-                        alt="Thesisphere Logo"
-                        style={{ width: '80%', height: '80%', objectFit: 'contain' }}
-                    />
-                </Avatar>
-
-
+                <img
+                    alt="Library Logo"
+                    src={logo}
+                    style={{
+                        width: '50px',
+                        height: '50px',
+                        objectFit: 'contain',
+                    }}
+                />
                 <Typography variant="h5" color="#221D33" sx={{ fontWeight: 'bold' }}>
                     THESISPHERE
                 </Typography>
             </Box>
+
 
             <Box
                 sx={{
@@ -87,6 +92,7 @@ const Login: React.FC = () => {
                         <Typography variant="h6" align="center" sx={{ fontWeight: 'bold' }}>
                             Login as
                         </Typography>
+
 
                         <Button
                             fullWidth
@@ -133,6 +139,21 @@ const Login: React.FC = () => {
                         >
                             Admin Login
                         </Button>
+                        <Button
+                            fullWidth
+                            variant="contained"
+                            sx={{
+                                mt: 0.5,
+                                mb: 1,
+                                bgcolor: '#221D33',
+                                color: 'white',
+                                '&:hover': { bgcolor: '#000000e6' },
+                                width: '100%',
+                            }}
+                            onClick={() => navigate('/GuestShelf')}
+                        >
+                            Guest Mode
+                        </Button>
                     </Box>
                 </Container>
             </Box>
@@ -140,4 +161,8 @@ const Login: React.FC = () => {
     );
 };
 
+
 export default Login;
+
+
+

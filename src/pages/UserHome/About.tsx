@@ -6,11 +6,13 @@ import thesisphere from '../../images/Thesisphere.png';
 import school from '../../images/School.png';
 import axios from 'axios';
 
+
 function About() {
     const [scrolling, setScrolling] = React.useState(false);
     const [feedback, setFeedback] = React.useState('');
     const [feedbackSent, setFeedbackSent] = React.useState(false);
     const [error, setError] = React.useState(false);
+
 
     React.useEffect(() => {
         const handleScroll = () => {
@@ -22,11 +24,13 @@ function About() {
         };
     }, []);
 
+
     const handleFeedbackSubmit = async () => {
         if (!feedback.trim()) {
             setError(true);
             return;
         }
+
 
         try {
             await axios.post('http://localhost:5000/feedback', {
@@ -43,6 +47,7 @@ function About() {
             console.error('Error sending feedback:', err);
         }
     };
+
 
     return (
         <React.Fragment>
@@ -103,6 +108,7 @@ function About() {
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     minHeight: '100vh',
+                    minWidth: '100%',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
@@ -115,11 +121,30 @@ function About() {
                 <Typography variant="h1" sx={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#49454F', marginBottom: '20px' }}>
                     Thesisphere
                 </Typography>
-                <Typography variant="body1" sx={{ fontSize: '1.25rem', color: '#49454F', lineHeight: '1.8', marginBottom: '40px' }}>
-                    A project developed by a dedicated team of third-year Computer Science students at New Era University.
-                    Our mission is to create a comprehensive, user-friendly web library for thesis that supports research and
-                    enhances the learning experience for our peers and faculty.
+                <Typography variant="body1" sx={{ fontSize: '1.25rem', color: '#49454F', lineHeight: '1.8', marginBottom: '40px', mr: '250px', ml: '250px', textAlign: 'justify' }}>
+                    A project developed by a dedicated team of third-year Computer Science students at New Era University. Our mission is to create a comprehensive, user-friendly web library for thesis that supports research and enhances the learning experience for our peers and faculty.<br /><br />
+                    Our project is guided by our esteemed professor, Sir Jeremias C. Esperanza, whose expertise and mentorship have been invaluable in shaping our vision.
                 </Typography>
+
+
+                <Typography variant="h1" sx={{ fontSize: '2rem', fontWeight: 'bold', color: '#49454F', marginBottom: '20px' }}>
+                    Developers:
+                </Typography>
+                <Typography variant="body1" sx={{ fontSize: '1.25rem', color: '#49454F', lineHeight: '1.8', marginBottom: '40px', mr: '200px', ml: '200px', textAlign: 'justify' }}>
+                    <ul style={{ listStyleType: 'disc', paddingLeft: '20px', margin: 0 }}>
+                        <li>Scrum Master: Juliana Mancera</li>
+                        <li>Developer 1: Jairus Joshua Ramos</li>
+                        <li>Developer 2: Alyssa Mae San Pedro</li>
+                        <li>Tester 1: Vince Arnold Sevilla</li>
+                        <li>Tester 2: Leo Gabriel Rentazida</li>
+                    </ul>
+                </Typography>
+
+
+
+
+
+
                 <Typography variant="h4" sx={{ fontSize: '2rem', fontWeight: 'bold', color: '#49454F', marginBottom: '20px' }}>
                     We value your feedback
                 </Typography>
@@ -136,7 +161,7 @@ function About() {
                         helperText={error ? 'Feedback cannot be empty.' : ''}
                     />
                 </Box>
-                <Button variant="contained" color="primary" onClick={handleFeedbackSubmit}>
+                <Button variant="contained" sx={{ backgroundColor: "#6A5ACD" }} onClick={handleFeedbackSubmit}>
                     Submit Feedback
                 </Button>
             </Container>
@@ -150,4 +175,10 @@ function About() {
     );
 }
 
+
 export default About;
+
+
+
+
+

@@ -5,7 +5,7 @@ import { UserAuth } from '../../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 
-const AcctHover: React.FC = () => {
+const GuestAcct: React.FC = () => {
     const { user, logout } = UserAuth();
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -124,7 +124,7 @@ const AcctHover: React.FC = () => {
 };
 
 
-export default AcctHover;
+export default GuestAcct;
 
 
 

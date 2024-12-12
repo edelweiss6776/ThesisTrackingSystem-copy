@@ -28,7 +28,6 @@ interface Thesis {
     AUTHOR: string;
     YEAR: number;
     COLLEGE_DEPT: string;
-    ABSTRACT: string;
 }
 
 
@@ -36,7 +35,7 @@ const ThesisCard: React.FC<{
     thesis: Thesis;
     isBookmarked: boolean;
     onBookmarkToggle: (id: string) => void;
-    onViewAbstract: (ABSTRACT: string) => void; // This is passed down to view the abstract.
+    onViewAbstract: () => void; // This will handle the button click for View Abstract
 }> = ({ thesis, isBookmarked, onBookmarkToggle, onViewAbstract }) => (
     <Box
         sx={{
@@ -65,8 +64,8 @@ const ThesisCard: React.FC<{
         <Typography variant="body2">Author: {thesis.AUTHOR}</Typography>
         <Typography variant="body2">Year: {thesis.YEAR}</Typography>
         <Typography variant="body2">Department: {thesis.COLLEGE_DEPT}</Typography>
-        <Typography variant="body2">Abstract: {thesis.ABSTRACT.slice(0, 50)}...</Typography>
         <Divider sx={{ marginY: 2 }} />
+
 
         {/* Bookmark IconButton */}
         <IconButton
@@ -80,14 +79,14 @@ const ThesisCard: React.FC<{
         </IconButton>
 
 
-        <Button variant="text" sx={{ color: 'White', backgroundColor: "#6A5ACD" }} onClick={() => onViewAbstract(thesis.ABSTRACT)}>
+        <Button variant="contained" sx={{ backgroundColor: "#6A5ACD" }} onClick={onViewAbstract}>
             View Abstract
         </Button>
     </Box>
 );
 
 
-const ShelfThesis: React.FC<{ onViewAbstract: (abstract: string) => void }> = ({ onViewAbstract }) => {
+const ShelfContent: React.FC = () => {
     const [theses, setTheses] = useState<Thesis[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
@@ -95,10 +94,7 @@ const ShelfThesis: React.FC<{ onViewAbstract: (abstract: string) => void }> = ({
     const [sortKey, setSortKey] = useState('');
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
     const [bookmarked, setBookmarked] = useState<Set<string>>(new Set());
-
-
-    const [openDialog, setOpenDialog] = useState(false);
-    const [currentAbstract, setCurrentAbstract] = useState('');
+    const [openAccessDeniedDialog, setOpenAccessDeniedDialog] = useState(false); // Dialog for access denied
 
 
     useEffect(() => {
@@ -190,15 +186,13 @@ const ShelfThesis: React.FC<{ onViewAbstract: (abstract: string) => void }> = ({
     }, [theses, filter, sortKey, sortOrder, bookmarked]);
 
 
-    const handleViewAbstract = (abstract: string) => {
-        setCurrentAbstract(abstract);
-        setOpenDialog(true);
+    const closeAccessDeniedDialog = () => {
+        setOpenAccessDeniedDialog(false);
     };
 
 
-    const closeDialog = () => {
-        setOpenDialog(false);
-        setCurrentAbstract('');
+    const handleViewAbstract = () => {
+        setOpenAccessDeniedDialog(true); // Open the dialog on button click
     };
 
 
@@ -270,21 +264,21 @@ const ShelfThesis: React.FC<{ onViewAbstract: (abstract: string) => void }> = ({
                             thesis={thesis}
                             isBookmarked={bookmarked.has(thesis.id)}
                             onBookmarkToggle={toggleBookmark}
-                            onViewAbstract={handleViewAbstract} // Updated to handle abstract
+                            onViewAbstract={handleViewAbstract} // Pass the handler for view abstract
                         />
                     </Grid>
                 ))}
             </Grid>
 
 
-            {/* Dialog to view abstract */}
-            <Dialog open={openDialog} onClose={closeDialog}>
-                <DialogTitle>Abstract</DialogTitle>
+            {/* Dialog for access denied */}
+            <Dialog open={openAccessDeniedDialog} onClose={closeAccessDeniedDialog}>
+                <DialogTitle>Access Denied</DialogTitle>
                 <DialogContent>
-                    <Typography>{currentAbstract}</Typography>
+                    <Typography>You don't have access to view the abstract of this thesis. Please send a request to the library.</Typography>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={closeDialog} color="primary">
+                    <Button onClick={closeAccessDeniedDialog} color="primary">
                         Close
                     </Button>
                 </DialogActions>
@@ -294,9 +288,7 @@ const ShelfThesis: React.FC<{ onViewAbstract: (abstract: string) => void }> = ({
 };
 
 
-export default ShelfThesis;
-
-
+export default ShelfContent;
 
 
 
